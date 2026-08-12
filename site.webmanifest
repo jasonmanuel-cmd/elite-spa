@@ -1,0 +1,17 @@
+{
+  "name": "Elite Auto Spa",
+  "short_name": "Elite Auto Spa",
+  "description": "Premium paint protection film, ceramic coatings, window tint, wraps, detailing, and restoration in Boerne & Greater San Antonio, TX.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0b0d",
+  "theme_color": "#0a0b0d",
+  "icons": [
+    {
+      "src": "/assets/icons/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
