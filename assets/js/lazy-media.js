@@ -25,6 +25,55 @@
   // Treat narrow screens as "mobile" — skip heavy autoplay video there.
   var isSmallScreen = window.matchMedia("(max-width: 720px)").matches;
 
+  /* ------------------------------------------------------------------ */
+  /* Lazy images: <img data-src="…" class="lazy-img">                    */
+  /* Promotes data-src -> src near the viewport and fades in on load.    */
+  /* ------------------------------------------------------------------ */
+  var lazyImages = Array.prototype.slice.call(
+    document.querySelectorAll("img[data-src]")
+  );
+
+  function hydrateImage(img) {
+    if (img.dataset.hydrated === "true") return;
+    img.dataset.hydrated = "true";
+
+    function markLoaded() {
+      img.classList.add("is-loaded");
+    }
+    if (img.complete && img.naturalWidth > 0) {
+      // Already cached once src is set.
+      img.addEventListener("load", markLoaded, { once: true });
+    } else {
+      img.addEventListener("load", markLoaded, { once: true });
+      img.addEventListener("error", markLoaded, { once: true });
+    }
+
+    img.src = img.getAttribute("data-src");
+    var srcset = img.getAttribute("data-srcset");
+    if (srcset) img.srcset = srcset;
+  }
+
+  if (lazyImages.length) {
+    if ("IntersectionObserver" in window) {
+      var imgObserver = new IntersectionObserver(
+        function (entries, obs) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              hydrateImage(entry.target);
+              obs.unobserve(entry.target);
+            }
+          });
+        },
+        { rootMargin: "300px 0px" }
+      );
+      lazyImages.forEach(function (img) {
+        imgObserver.observe(img);
+      });
+    } else {
+      lazyImages.forEach(hydrateImage);
+    }
+  }
+
   var lazyVideos = Array.prototype.slice.call(
     document.querySelectorAll("[data-lazy-video]")
   );

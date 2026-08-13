@@ -4,6 +4,7 @@
   "private": true,
   "description": "Elite Auto Spa — premium automotive restyling website (static HTML/CSS/JS).",
   "scripts": {
+    "build": "node build/build.mjs",
     "dev": "serve -l 3000 .",
     "start": "serve -l 3000 ."
   },

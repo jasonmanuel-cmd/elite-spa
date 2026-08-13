@@ -478,6 +478,17 @@ p {
   padding: 0.6rem 1.15rem;
 }
 
+/* Below the desktop breakpoint, the fixed bottom CTA bar carries Call /
+   Get-a-Quote, so keep only the hamburger in the header to avoid crowding. */
+.header-actions .btn {
+  display: none;
+}
+@media (min-width: 980px) {
+  .header-actions .btn {
+    display: inline-flex;
+  }
+}
+
 /* Mobile menu toggle */
 .nav-toggle {
   display: inline-flex;
@@ -1807,6 +1818,362 @@ p {
   }
   50% {
     transform: translateX(320%);
+  }
+}
+
+/* ==========================================================================
+   17. GENERATED CONTENT PAGES
+   Service / location / gallery / about / faq / contact / legal pages emitted
+   by build/*.mjs. Kept in one block so the generator's markup stays styled
+   consistently with the hand-authored homepage above.
+   ========================================================================== */
+
+/* --- Section helpers ------------------------------------------------ */
+.section--alt {
+  background:
+    linear-gradient(180deg, rgba(18, 20, 24, 0.9), rgba(10, 11, 13, 0.9)),
+    var(--bg);
+  border-block: 1px solid var(--border);
+}
+.section--top {
+  padding-top: calc(var(--header-h) + clamp(2rem, 5vw, 4rem));
+}
+.container.narrow {
+  max-width: var(--container-narrow);
+}
+
+/* --- Breadcrumb ----------------------------------------------------- */
+.breadcrumb {
+  padding-top: calc(var(--header-h) + 1.25rem);
+  padding-bottom: 0.25rem;
+  font-size: var(--fs-small);
+}
+.breadcrumb ol {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--text-muted);
+}
+.breadcrumb li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.breadcrumb li:not(:last-child)::after {
+  content: "/";
+  color: var(--color-line-strong);
+}
+.breadcrumb a {
+  color: var(--text-muted);
+  transition: color 0.2s var(--ease);
+}
+.breadcrumb a:hover {
+  color: var(--text);
+}
+.breadcrumb li[aria-current="page"] {
+  color: var(--text-soft);
+}
+
+/* --- Page hero (image background + overlay content) ----------------- */
+.page-hero {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: clamp(340px, 52vh, 560px);
+  padding-block: clamp(2.5rem, 6vw, 5rem);
+  overflow: hidden;
+  border-bottom: 1px solid var(--border);
+}
+.page-hero--compact {
+  min-height: clamp(240px, 34vh, 360px);
+  align-items: center;
+}
+.page-hero__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.page-hero__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.page-hero__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(10, 11, 13, 0.95) 0%, rgba(10, 11, 13, 0.7) 45%, rgba(10, 11, 13, 0.25) 100%),
+    linear-gradient(0deg, rgba(10, 11, 13, 0.95) 0%, transparent 55%);
+}
+.page-hero__media::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: radial-gradient(900px 400px at 15% 120%, rgba(47, 143, 255, 0.18), transparent 60%);
+}
+.page-hero .container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+.page-hero__inner {
+  max-width: 720px;
+}
+.page-hero__inner .lead {
+  margin-top: 0.9rem;
+}
+.page-hero__inner .btn-row {
+  margin-top: 1.6rem;
+}
+
+/* --- Benefit list (cards) ------------------------------------------- */
+.benefit-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+.benefit-list li {
+  display: flex;
+  gap: 0.9rem;
+  padding: 1.4rem;
+  background: var(--metal);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+.benefit-list strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  margin-bottom: 0.3rem;
+  color: var(--text);
+}
+.benefit-list p {
+  font-size: var(--fs-small);
+  margin: 0;
+}
+.tick {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  background: var(--accent-soft, var(--color-accent-soft));
+  color: var(--accent);
+  border: 1px solid rgba(47, 143, 255, 0.35);
+}
+.tick svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* --- Process list --------------------------------------------------- */
+.process-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.1rem;
+  counter-reset: proc;
+}
+.process-list li {
+  display: flex;
+  gap: 1.1rem;
+  align-items: flex-start;
+  padding: 1.4rem 1.5rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+.proc-step__num {
+  flex: none;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.25rem;
+  line-height: 1;
+  color: var(--accent);
+  padding-right: 1.1rem;
+  border-right: 1px solid var(--border);
+}
+.process-list h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.3rem;
+}
+.process-list p {
+  font-size: var(--fs-small);
+  margin: 0;
+}
+
+/* --- FAQ sub-elements (generator markup) ---------------------------- */
+.faq-item__icon {
+  flex: none;
+  width: 26px;
+  height: 26px;
+  position: relative;
+}
+.faq-item__icon::before,
+.faq-item__icon::after {
+  content: "";
+  position: absolute;
+  background: var(--accent);
+  transition: transform 0.25s var(--ease), opacity 0.25s var(--ease);
+}
+.faq-item__icon::before {
+  top: 50%;
+  left: 25%;
+  right: 25%;
+  height: 1.5px;
+  transform: translateY(-50%);
+}
+.faq-item__icon::after {
+  left: 50%;
+  top: 25%;
+  bottom: 25%;
+  width: 1.5px;
+  transform: translateX(-50%);
+}
+.faq-item[open] .faq-item__icon::after {
+  opacity: 0;
+  transform: translateX(-50%) rotate(90deg);
+}
+.faq-item__body {
+  padding: 0 0.25rem 1.4rem;
+  color: var(--text-soft);
+  max-width: 68ch;
+}
+.faq-item__body p {
+  margin-bottom: 0.75rem;
+}
+
+/* --- Pill links (related services) ---------------------------------- */
+.pill-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+}
+.pill-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: var(--fs-small);
+  font-weight: 500;
+  color: var(--text-soft);
+  transition: border-color 0.2s var(--ease), color 0.2s var(--ease), transform 0.2s var(--ease);
+}
+.pill-link svg {
+  width: 16px;
+  height: 16px;
+  color: var(--accent);
+}
+.pill-link:hover {
+  color: var(--text);
+  border-color: var(--color-line-strong);
+  transform: translateY(-2px);
+}
+
+/* --- Contact page --------------------------------------------------- */
+.contact-card {
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+  background: var(--metal);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+}
+.contact-card h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+}
+.contact-card h3 {
+  font-size: 1rem;
+  margin: 1.5rem 0 0.6rem;
+  color: var(--text);
+}
+.contact-card address {
+  font-style: normal;
+  color: var(--text-soft);
+  line-height: 1.7;
+}
+.contact-line {
+  margin-top: 0.9rem;
+}
+.contact-card--cta {
+  background:
+    radial-gradient(600px 300px at 100% 0%, rgba(47, 143, 255, 0.12), transparent 60%),
+    var(--surface);
+}
+.hours-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border);
+  font-size: var(--fs-small);
+  color: var(--text-soft);
+}
+.hours-list li:last-child {
+  border-bottom: 0;
+}
+.map-embed {
+  margin-top: 1.6rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+}
+.map-embed iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  filter: grayscale(0.4) contrast(1.05) brightness(0.85);
+}
+
+/* --- Inline text link ----------------------------------------------- */
+.link {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(47, 143, 255, 0.4);
+  transition: text-decoration-color 0.2s var(--ease);
+}
+.link:hover {
+  text-decoration-color: var(--accent);
+}
+
+/* --- Legal / prose disclaimer --------------------------------------- */
+.disclaimer {
+  padding: 0.9rem 1.1rem;
+  margin-bottom: 1.75rem;
+  background: var(--color-accent-soft);
+  border: 1px solid rgba(47, 143, 255, 0.35);
+  border-radius: var(--radius);
+  font-size: var(--fs-small);
+  color: var(--text-soft);
+}
+
+/* --- Lazy image fade ------------------------------------------------ */
+.lazy-img {
+  opacity: 0;
+  transition: opacity 0.6s var(--ease);
+}
+.lazy-img.is-loaded {
+  opacity: 1;
+}
+
+/* --- Responsive: promote grids at wider widths ---------------------- */
+@media (min-width: 720px) {
+  .benefit-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 640px) {
+  .page-hero__inner {
+    max-width: 640px;
   }
 }
 
