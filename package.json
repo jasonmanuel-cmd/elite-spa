@@ -2,6 +2,7 @@
   "name": "elite-auto-spa",
   "version": "1.0.0",
   "private": true,
+  "packageManager": "pnpm@10.15.0",
   "description": "Elite Auto Spa — premium automotive restyling website (static HTML/CSS/JS).",
   "scripts": {
     "build": "node build/build.mjs",
