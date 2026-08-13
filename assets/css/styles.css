@@ -93,11 +93,17 @@
   box-sizing: border-box;
 }
 
-* {
+  * {
   margin: 0;
-}
+  }
 
-html {
+  /* Ensure the [hidden] attribute always wins over component display rules
+     (e.g. .btn { display:inline-flex }) so JS-toggled buttons hide correctly. */
+  [hidden] {
+  display: none !important;
+  }
+  
+  html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
   scroll-padding-top: calc(var(--header-h) + 12px);
