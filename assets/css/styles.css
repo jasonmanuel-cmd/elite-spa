@@ -398,16 +398,22 @@ p {
 }
 
 .brand__mark {
-  width: 34px;
-  height: 34px;
+  width: 40px;
+  height: 40px;
   flex: none;
   display: grid;
   place-items: center;
-  border-radius: var(--radius);
+  border-radius: 999px;
+  object-fit: cover;
   background: var(--metal);
   border: 1px solid var(--color-line-strong);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.4), 0 4px 12px rgba(0, 0, 0, 0.35);
   color: var(--accent);
   font-weight: 800;
+}
+.footer-brand .brand__mark {
+  width: 44px;
+  height: 44px;
 }
 
 .brand__name {

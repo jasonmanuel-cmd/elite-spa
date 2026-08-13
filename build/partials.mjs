@@ -104,7 +104,7 @@ export const header = `<body>
   <header class="site-header" data-header>
     <div class="container">
       <a class="brand" href="/" aria-label="Elite Auto Spa home">
-        <span class="brand__mark" aria-hidden="true">E</span>
+        <img class="brand__mark" src="/assets/images/elite-logo.jpg" alt="" aria-hidden="true" width="40" height="40" />
         <span class="brand__name">
           Elite Auto Spa
           <small>Boerne &middot; San Antonio</small>
@@ -169,10 +169,10 @@ export const footer = `  <footer class="site-footer">
     <div class="container">
       <div class="footer-grid">
         <div class="footer-col footer-brand">
-          <a class="brand" href="/" aria-label="Elite Auto Spa home">
-            <span class="brand__mark" aria-hidden="true">E</span>
-            <span class="brand__name">Elite Auto Spa<small>Restyling Showroom</small></span>
-          </a>
+        <a class="brand" href="/" aria-label="Elite Auto Spa home">
+          <img class="brand__mark" src="/assets/images/elite-logo.jpg" alt="" aria-hidden="true" width="44" height="44" />
+          <span class="brand__name">Elite Auto Spa<small>Restyling Showroom</small></span>
+        </a>
           <p>Premium automotive restyling &mdash; paint protection film, ceramic coatings, window tint, wraps, detailing, and restoration.</p>
           <div class="social-row">
             <a href="${SITE.instagram}" aria-label="Elite Auto Spa on Instagram" rel="noopener" target="_blank">
