@@ -39,6 +39,8 @@ export function head({
   ogDescription,
   ogImage = "/assets/images/og-default.png",
   preloadImage,
+  robots = "index, follow, max-image-preview:large",
+  extraScripts = [],
   jsonld = []
 }) {
   const abs = (p) => (p.startsWith("http") ? p : SITE.origin + p);
@@ -63,7 +65,7 @@ export function head({
   <title>${title}</title>
   <meta name="description" content="${description}" />
   <link rel="canonical" href="${abs(canonical)}" />
-  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <meta name="robots" content="${robots}" />
 
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Elite Auto Spa" />
@@ -89,7 +91,8 @@ ${preloadImage ? `  <link rel="preload" as="image" href="${preloadImage}" fetchp
   <script src="/assets/js/main.js" defer></script>
   <script src="/assets/js/quote-form.js" defer></script>
   <script src="/assets/js/lazy-media.js" defer></script>
-
+${extraScripts.map((s) => `  <script src="${s}" defer></script>
+`).join("")}
 ${ld}
 </head>
 `;

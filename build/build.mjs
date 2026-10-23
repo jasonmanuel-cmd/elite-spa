@@ -24,6 +24,7 @@ import {
   privacyPageObj,
   smsPageObj
 } from "./other-pages.mjs";
+import { componentsPageObj } from "./components.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
@@ -37,7 +38,8 @@ const pages = [
   faqPageObj,
   contactPageObj,
   privacyPageObj,
-  smsPageObj
+  smsPageObj,
+  componentsPageObj
 ];
 
 /* Compose a full HTML document from a page definition. */
@@ -51,6 +53,8 @@ function render(page) {
       ogDescription: page.ogDescription,
       ogImage: page.ogImage,
       preloadImage: page.preloadImage,
+      robots: page.robots,
+      extraScripts: page.extraScripts,
       jsonld: page.jsonld || []
     }) +
     header +
@@ -99,7 +103,7 @@ console.log("  ✓ index.html (header/footer synced)");
 const today = new Date().toISOString().slice(0, 10);
 const urls = [
   { loc: "/", priority: "1.0", freq: "weekly" },
-  ...pages.map((p) => ({
+  ...pages.filter((p) => !p.noindex).map((p) => ({
     loc: p.canonical,
     priority: p.out.startsWith("services/") ? "0.9" : "0.7",
     freq: "monthly"
