@@ -618,7 +618,7 @@ p {
 /* ------------------------------------------------------------------ */
 .hero {
   position: relative;
-  min-height: min(92vh, 820px);
+  min-height: clamp(820px, 108vh, 980px);
   display: flex;
   align-items: center;
   overflow: hidden;
@@ -639,18 +639,45 @@ p {
   object-position: center;
 }
 
+/* The car sits ~47% across the hero video frame; anchor the crop on it so it
+   stays centered when the frame is cropped (e.g. portrait phones). */
+.hero__media .hero__video {
+  object-position: 47% 50%;
+}
+
 .hero__media::after {
   content: "";
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(90deg, rgba(10, 11, 13, 0.92) 0%, rgba(10, 11, 13, 0.6) 45%, rgba(10, 11, 13, 0.25) 100%),
-    linear-gradient(0deg, rgba(10, 11, 13, 0.95) 0%, transparent 45%);
+    linear-gradient(180deg, rgba(10, 11, 13, 0.88) 0%, rgba(10, 11, 13, 0.55) 30%, rgba(10, 11, 13, 0.05) 52%, rgba(10, 11, 13, 0.05) 72%, rgba(10, 11, 13, 0.85) 100%);
 }
 
 .hero__inner {
-  padding-block: clamp(4rem, 10vw, 7rem);
-  max-width: 760px;
+    padding-bottom: calc(56.25vw + 2rem);
+  }
+}
+
+/* Copy is centered at the top and the trust items are pinned to the bottom,
+   leaving the middle of the frame clear for the car in the hero video. */
+.hero {
+  align-items: stretch;
+}
+
+.hero > .container {
+  display: flex;
+  width: 100%;
+}
+
+.hero__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 900px;
+  margin-inline: auto;
+  text-align: center;
+  padding-block: clamp(3rem, 7vw, 5rem) 2rem;
 }
 
 .hero h1 {
@@ -660,14 +687,18 @@ p {
 
 .hero .lead {
   max-width: 620px;
+  margin-inline: auto;
 }
 
 .hero .btn-row {
+  justify-content: center;
   margin-top: 2rem;
 }
 
 .trust-line {
-  margin-top: 2rem;
+  margin-top: auto;
+  padding-top: 2rem;
+  justify-content: center;
   display: flex;
   flex-wrap: wrap;
   align-items: center;

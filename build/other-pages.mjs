@@ -78,7 +78,7 @@ ${breadcrumb(trail)}
   <main id="main">
     <section class="page-hero page-hero--compact" aria-labelledby="loc-title">
       <div class="page-hero__media">
-        <img src="/assets/images/showroom-interior.png" alt="Elite Auto Spa restyling studio interior" width="1024" height="1024" loading="eager" decoding="async" />
+        <img src="/assets/images/showroom-interior.webp" alt="Elite Auto Spa restyling studio interior" width="1024" height="1024" loading="eager" decoding="async" />
       </div>
       <div class="container">
         <div class="page-hero__inner">
@@ -194,14 +194,14 @@ export const locationPages = LOCATIONS.map(locationPage);
 
 /* -------------------------------- GALLERY ------------------------------- */
 const galleryItems = [
-  ["/assets/images/projects/ppf-detail.png", "Paint protection film application on a glossy black hood", "Paint Protection Film"],
-  ["/assets/images/projects/ceramic-coating.png", "Water beading on a ceramic-coated surface", "Ceramic Coating"],
-  ["/assets/images/projects/window-tint.png", "Luxury sedan with freshly tinted windows", "Window Tint"],
-  ["/assets/images/projects/vinyl-wrap.png", "Pickup truck wrapped in satin color-shift vinyl", "Vinyl Wrap"],
-  ["/assets/images/projects/mobile-detailing.png", "Interior detailing of a luxury car", "Detailing"],
-  ["/assets/images/projects/paint-correction.png", "Machine polishing during paint correction", "Paint Correction"],
-  ["/assets/images/projects/restoration.png", "Restored classic car in a premium workshop", "Restoration"],
-  ["/assets/images/showroom-interior.png", "Elite Auto Spa restyling studio interior", "The Showroom"]
+  ["/assets/images/projects/ppf-detail.webp", "Paint protection film application on a glossy black hood", "Paint Protection Film"],
+  ["/assets/images/projects/ceramic-coating.webp", "Water beading on a ceramic-coated surface", "Ceramic Coating"],
+  ["/assets/images/projects/window-tint.webp", "Luxury sedan with freshly tinted windows", "Window Tint"],
+  ["/assets/images/projects/vinyl-wrap.webp", "Pickup truck wrapped in satin color-shift vinyl", "Vinyl Wrap"],
+  ["/assets/images/projects/mobile-detailing.webp", "Interior detailing of a luxury car", "Detailing"],
+  ["/assets/images/projects/paint-correction.webp", "Machine polishing during paint correction", "Paint Correction"],
+  ["/assets/images/projects/restoration.webp", "Restored classic car in a premium workshop", "Restoration"],
+  ["/assets/images/showroom-interior.webp", "Elite Auto Spa restyling studio interior", "The Showroom"]
 ];
 
 function galleryPage() {
@@ -272,7 +272,7 @@ ${breadcrumb(trail)}
   <main id="main">
     <section class="page-hero page-hero--compact" aria-labelledby="about-title">
       <div class="page-hero__media">
-        <img src="/assets/images/showroom-interior.png" alt="Interior of the Elite Auto Spa restyling studio" width="1024" height="1024" loading="eager" decoding="async" />
+        <img src="/assets/images/showroom-interior.webp" alt="Interior of the Elite Auto Spa restyling studio" width="1024" height="1024" loading="eager" decoding="async" />
       </div>
       <div class="container">
         <div class="page-hero__inner">
@@ -466,6 +466,8 @@ ${breadcrumb(trail)}
 export const contactPageObj = contactPage();
 
 /* --------------------------------- LEGAL -------------------------------- */
+const LEGAL_UPDATED = "October 23, 2026";
+
 function legalPage({ out, title, description, canonical, heading, body }) {
   const trail = [
     { label: "Home", href: "/" },
@@ -478,64 +480,87 @@ ${breadcrumb(trail)}
       <div class="container narrow">
         <div class="prose reveal">
           <h1 id="legal-title">${heading}</h1>
-          <p class="disclaimer"><strong>Template notice:</strong> This is placeholder policy text for development. Replace with legally reviewed content before publishing.</p>
+          <p><em>Last updated: ${LEGAL_UPDATED}</em></p>
           ${body}
         </div>
       </div>
     </section>
   </main>
 `;
-  return {
-    out,
-    title,
-    description,
-    canonical,
-    jsonld: [breadcrumbLd(trail)],
-    main
-  };
+  return { out, title, description, canonical, jsonld: [breadcrumbLd(trail)], main };
 }
 
 export const privacyPageObj = legalPage({
   out: "privacy-policy.html",
   title: "Privacy Policy | Elite Auto Spa",
   description:
-    "Privacy Policy for Elite Auto Spa (Elite Mobile Detail LLC). Placeholder template — replace with legally reviewed content before publishing.",
+    "How Elite Auto Spa (Elite Mobile Detail LLC) collects, uses, and protects information submitted through this website.",
   canonical: "/privacy-policy.html",
   heading: "Privacy Policy",
   body: `
-          <p>Elite Auto Spa (\u201cwe,\u201d \u201cus,\u201d or \u201cour\u201d), a DBA of Elite Mobile Detail LLC, respects your privacy. This policy explains, in general terms, how information submitted through this website may be handled.</p>
+          <p>Elite Auto Spa (“we,” “us,” or “our”) is a trade name of Elite Mobile Detail LLC, 108 Scheele Rd, Unit 3, Boerne, TX 78015. This policy explains what information we collect through eliteautospasa.com, how we use it, and the choices you have.</p>
+
           <h2>Information we collect</h2>
-          <p>When you use our quote or contact forms, we may collect the information you provide, such as your name, phone number, email address, vehicle details, and any message content. We may also collect basic technical information through standard web logs.</p>
+          <p><strong>Information you give us.</strong> When you submit our quote form we collect the service you are interested in; your vehicle's year, make, model, and type; any project details you write; your name, phone number, and email address; your preferred contact method and timeframe; and whether you agreed to receive text messages.</p>
+          <p><strong>Information collected automatically.</strong> Our hosting provider keeps standard server logs (such as IP address, browser type, and pages requested) for security and reliability. We do not currently run advertising or analytics trackers on this site.</p>
+
           <h2>How we use information</h2>
-          <p>We use submitted information to respond to your request, provide quotes and services, and communicate about appointments. We do not sell your personal information.</p>
+          <ul>
+            <li>To respond to your request and prepare a quote.</li>
+            <li>To schedule and carry out services, and to send appointment updates.</li>
+            <li>To protect the site against spam and abuse.</li>
+            <li>To meet legal and accounting obligations.</li>
+          </ul>
+          <p>We do not sell your personal information, and we do not share it with third parties for their own marketing.</p>
+
+          <h2>Who handles your information</h2>
+          <p>We use service providers who process information only on our behalf: Vercel (website hosting), and Resend (delivery of quote-request emails to us). The contact page embeds a Google Map and the site loads fonts from Google Fonts, so Google may receive your IP address when those load. We may also disclose information if required by law.</p>
+
           <h2>Text messaging</h2>
-          <p>If you opt in to text messages, we use your number to send appointment updates and service-related messages. Consent is not a condition of purchase. Reply STOP to opt out. See our <a href="/sms-terms.html">SMS Terms</a>.</p>
-          <h2>Data retention & security</h2>
-          <p>We retain information as needed to provide services and meet legal obligations, and we take reasonable steps to protect it. No method of transmission or storage is completely secure.</p>
+          <p>If you check the text-message consent box, we use your mobile number to send appointment updates and service-related messages. Your mobile number and SMS consent are never shared with third parties or affiliates for marketing or promotional purposes. See our <a href="/sms-terms.html">SMS Terms</a> for how to opt out.</p>
+
+          <h2>Retention and security</h2>
+          <p>We keep quote requests and customer records for as long as needed to provide services, resolve disputes, and meet legal obligations, then delete or anonymize them. We use reasonable safeguards, including encrypted (HTTPS) transmission, but no method of transmission or storage is completely secure.</p>
+
           <h2>Your choices</h2>
-          <p>You may contact us to request access to or deletion of information you've submitted, subject to applicable law.</p>
+          <p>You may ask us to access, correct, or delete the information you submitted, and you may opt out of text messages at any time by replying STOP. Texas and other state laws may give you additional rights; contact us and we will respond as the law requires.</p>
+
+          <h2>Children</h2>
+          <p>This site is not directed to children under 13, and we do not knowingly collect their information.</p>
+
+          <h2>Changes</h2>
+          <p>We may update this policy and will change the date above when we do.</p>
+
           <h2>Contact</h2>
-          <p>Questions? Email <a href="mailto:contact@eliteautospasa.com">contact@eliteautospasa.com</a> or call (830) 431-2088.</p>`
+          <p>Questions or requests? Email <a href="mailto:contact@eliteautospasa.com">contact@eliteautospasa.com</a> or call <a href="tel:+18304312088">(830) 431-2088</a>.</p>`
 });
 
 export const smsPageObj = legalPage({
   out: "sms-terms.html",
   title: "SMS Terms & Conditions | Elite Auto Spa",
   description:
-    "SMS Terms & Conditions for Elite Auto Spa (Elite Mobile Detail LLC). Placeholder template — replace with legally reviewed content before publishing.",
+    "SMS Terms & Conditions for Elite Auto Spa (Elite Mobile Detail LLC): what texts we send, how to opt out, and message rates.",
   canonical: "/sms-terms.html",
   heading: "SMS Terms & Conditions",
   body: `
           <h2>Program description</h2>
-          <p>By opting in, you agree to receive appointment updates and service-related text messages from Elite Auto Spa at the number you provide.</p>
+          <p>Elite Auto Spa, a trade name of Elite Mobile Detail LLC, sends text messages to customers who opt in through our quote form. Messages are limited to appointment confirmations and reminders, scheduling changes, quote follow-ups you requested, and other service-related updates about your vehicle. We do not send promotional marketing texts under this program.</p>
+
+          <h2>How you opt in</h2>
+          <p>You opt in by checking the text-message consent box on our quote form and submitting your mobile number. You can also opt in by texting us first.</p>
+
           <h2>Consent</h2>
-          <p>Consent to receive text messages is not a condition of any purchase. Message frequency may vary.</p>
-          <h2>Message & data rates</h2>
+          <p>Consent to receive text messages is not a condition of any purchase or service. Message frequency varies based on your appointments and requests.</p>
+
+          <h2>Message and data rates</h2>
           <p>Message and data rates may apply, depending on your mobile carrier and plan.</p>
-          <h2>Opt out</h2>
-          <p>Reply STOP at any time to opt out of text messages. Reply HELP for help, or contact us at (830) 431-2088.</p>
+
+          <h2>Opt out and help</h2>
+          <p>Reply <strong>STOP</strong> at any time to stop receiving messages; you will receive one confirmation text and no further messages. Reply <strong>HELP</strong> for help, or contact us at <a href="tel:+18304312088">(830) 431-2088</a> or <a href="mailto:contact@eliteautospasa.com">contact@eliteautospasa.com</a>.</p>
+
           <h2>Carriers</h2>
           <p>Carriers are not liable for delayed or undelivered messages.</p>
+
           <h2>Privacy</h2>
-          <p>Your information is handled in accordance with our <a href="/privacy-policy.html">Privacy Policy</a>.</p>`
+          <p>We handle your information as described in our <a href="/privacy-policy.html">Privacy Policy</a>. Your mobile number and SMS consent are not shared with third parties or affiliates for marketing or promotional purposes.</p>`
 });

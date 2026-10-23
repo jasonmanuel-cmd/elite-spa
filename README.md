@@ -61,6 +61,8 @@ Netlify, GitHub Pages, S3+CloudFront, etc.). Just serve the project root.
 │   ├── other-pages.mjs        # Location/gallery/about/faq/contact/legal
 │   └── build.mjs              # Runner — writes .html files + sitemap.xml
 │
+├── api/quote.js               # Quote form endpoint (Vercel Function)
+├── source-images/             # Original PNGs (not deployed, see .vercelignore)
 ├── sitemap.xml                # Generated
 ├── robots.txt
 ├── site.webmanifest
@@ -80,8 +82,8 @@ This rewrites the `services/`, `locations/`, and top-level content pages plus
 `sitemap.xml`. The shared header, footer, and quote modal live in
 `build/partials.mjs` — change them once and rebuild to update every page.
 
-> If you edit the header/footer, mirror the change in `index.html` (which is
-> hand-authored) or migrate `index.html` into the generator.
+> `pnpm build` also rewrites the header and footer of `index.html` from
+> `build/partials.mjs`; its `<head>` and `<main>` stay hand-authored.
 
 ---
 
@@ -100,25 +102,24 @@ This rewrites the `services/`, `locations/`, and top-level content pages plus
 
 ---
 
-## Wiring up the quote form
+## Quote form → email
 
-The quote form (`assets/js/quote-form.js`) posts to `/api/quote` by default and
-currently **simulates** a successful submission on the client so the UX is
-fully demonstrable without a backend.
+The quote form posts JSON to `/api/quote` (`api/quote.js`, a Vercel Function
+with no npm dependencies). It re-validates every field server-side, drops
+honeypot hits, rate-limits (best effort, per instance), and emails the lead
+through the Resend API.
 
-To make it live, do one of the following:
+Set these in Vercel → Project → Settings → Environment Variables:
 
-1. **Serverless endpoint** — deploy a handler at `/api/quote` (e.g. a Vercel
-   Function) that accepts the `multipart/form-data` payload, then remove the
-   simulated-success branch in `quote-form.js` (look for `SIMULATE_SUBMIT`).
-2. **Form service** — point the form's `action` at a provider such as Formspree,
-   Basin, or Web3Forms and let them handle delivery + spam filtering.
+| Variable | Purpose |
+|----------|---------|
+| `RESEND_API_KEY` | Resend API key |
+| `LEAD_TO_EMAIL` | Inbox that receives leads |
+| `LEAD_FROM_EMAIL` | Optional verified sender; default is Resend's sandbox sender, which can only deliver to the Resend account owner |
 
-The form fields map to: `service`, `vehicle_year`, `vehicle_make`,
-`vehicle_model`, `vehicle_type`, `project_details`, `name`, `phone`, `email`,
-`preferred_contact`, `preferred_timeframe`, `photos[]`, and `sms_consent`.
-
-File uploads require a backend/form-service that accepts multipart uploads.
+Until the first two are set the endpoint returns 503 and the form shows the
+"please call us" fallback. Photo upload was removed (the endpoint takes JSON
+only); the form tells visitors to text or email photos after submitting.
 
 ---
 

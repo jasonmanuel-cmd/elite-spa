@@ -62,7 +62,7 @@
   <header class="site-header" data-header>
     <div class="container">
       <a class="brand" href="/" aria-label="Elite Auto Spa home">
-        <span class="brand__mark" aria-hidden="true">E</span>
+        <img class="brand__mark" src="/assets/images/elite-logo.jpg" alt="" aria-hidden="true" width="40" height="40" />
         <span class="brand__name">
           Elite Auto Spa
           <small>Boerne &middot; San Antonio</small>
@@ -116,35 +116,35 @@
         </div>
         <div class="gallery-grid">
           <figure class="gallery-item reveal" data-delay="0">
-            <img data-src="/assets/images/projects/ppf-detail.png" alt="Paint protection film application on a glossy black hood" width="1024" height="1024" loading="lazy" decoding="async" class="lazy-img" />
+            <img data-src="/assets/images/projects/ppf-detail.webp" alt="Paint protection film application on a glossy black hood" width="1024" height="1024" loading="lazy" decoding="async" class="lazy-img" />
             <figcaption>Paint Protection Film</figcaption>
           </figure>
           <figure class="gallery-item reveal" data-delay="1">
-            <img data-src="/assets/images/projects/ceramic-coating.png" alt="Water beading on a ceramic-coated surface" width="1024" height="1024" loading="lazy" decoding="async" class="lazy-img" />
+            <img data-src="/assets/images/projects/ceramic-coating.webp" alt="Water beading on a ceramic-coated surface" width="1024" height="1024" loading="lazy" decoding="async" class="lazy-img" />
             <figcaption>Ceramic Coating</figcaption>
           </figure>
           <figure class="gallery-item reveal" data-delay="2">
-            <img data-src="/assets/images/projects/window-tint.png" alt="Luxury sedan with freshly tinted windows" width="1024" height="1024" loading="lazy" decoding="async" class="lazy-img" />
+            <img data-src="/assets/images/projects/window-tint.webp" alt="Luxury sedan with freshly tinted windows" width="1024" height="1024" loading="lazy" decoding="async" class="lazy-img" />
             <figcaption>Window Tint</figcaption>
           </figure>
           <figure class="gallery-item reveal" data-delay="3">
-            <img data-src="/assets/images/projects/vinyl-wrap.png" alt="Pickup truck wrapped in satin color-shift vinyl" width="1024" height="1024" loading="lazy" decoding="async" class="lazy-img" />
+            <img data-src="/assets/images/projects/vinyl-wrap.webp" alt="Pickup truck wrapped in satin color-shift vinyl" width="1024" height="1024" loading="lazy" decoding="async" class="lazy-img" />
             <figcaption>Vinyl Wrap</figcaption>
           </figure>
           <figure class="gallery-item reveal" data-delay="0">
-            <img data-src="/assets/images/projects/mobile-detailing.png" alt="Interior detailing of a luxury car" width="1024" height="1024" loading="lazy" decoding="async" class="lazy-img" />
+            <img data-src="/assets/images/projects/mobile-detailing.webp" alt="Interior detailing of a luxury car" width="1024" height="1024" loading="lazy" decoding="async" class="lazy-img" />
             <figcaption>Detailing</figcaption>
           </figure>
           <figure class="gallery-item reveal" data-delay="1">
-            <img data-src="/assets/images/projects/paint-correction.png" alt="Machine polishing during paint correction" width="1024" height="1024" loading="lazy" decoding="async" class="lazy-img" />
+            <img data-src="/assets/images/projects/paint-correction.webp" alt="Machine polishing during paint correction" width="1024" height="1024" loading="lazy" decoding="async" class="lazy-img" />
             <figcaption>Paint Correction</figcaption>
           </figure>
           <figure class="gallery-item reveal" data-delay="2">
-            <img data-src="/assets/images/projects/restoration.png" alt="Restored classic car in a premium workshop" width="1024" height="1024" loading="lazy" decoding="async" class="lazy-img" />
+            <img data-src="/assets/images/projects/restoration.webp" alt="Restored classic car in a premium workshop" width="1024" height="1024" loading="lazy" decoding="async" class="lazy-img" />
             <figcaption>Restoration</figcaption>
           </figure>
           <figure class="gallery-item reveal" data-delay="3">
-            <img data-src="/assets/images/showroom-interior.png" alt="Elite Auto Spa restyling studio interior" width="1024" height="1024" loading="lazy" decoding="async" class="lazy-img" />
+            <img data-src="/assets/images/showroom-interior.webp" alt="Elite Auto Spa restyling studio interior" width="1024" height="1024" loading="lazy" decoding="async" class="lazy-img" />
             <figcaption>The Showroom</figcaption>
           </figure>
         </div>
@@ -168,10 +168,10 @@
     <div class="container">
       <div class="footer-grid">
         <div class="footer-col footer-brand">
-          <a class="brand" href="/" aria-label="Elite Auto Spa home">
-            <span class="brand__mark" aria-hidden="true">E</span>
-            <span class="brand__name">Elite Auto Spa<small>Restyling Showroom</small></span>
-          </a>
+        <a class="brand" href="/" aria-label="Elite Auto Spa home">
+          <img class="brand__mark" src="/assets/images/elite-logo.jpg" alt="" aria-hidden="true" width="44" height="44" />
+          <span class="brand__name">Elite Auto Spa<small>Restyling Showroom</small></span>
+        </a>
           <p>Premium automotive restyling &mdash; paint protection film, ceramic coatings, window tint, wraps, detailing, and restoration.</p>
           <div class="social-row">
             <a href="https://www.instagram.com/eliteautospasa/" aria-label="Elite Auto Spa on Instagram" rel="noopener" target="_blank">
@@ -353,15 +353,7 @@
                 </select>
               </div>
             </div>
-            <div class="field">
-              <label for="c-photos">Photos (optional)</label>
-              <label class="file-drop" for="c-photos">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M12 16V4M8 8l4-4 4 4"/><path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
-                <span data-file-label>Tap to add photos of your vehicle</span>
-              </label>
-              <input id="c-photos" name="photos" type="file" accept="image/*" multiple class="sr-only" />
-              <span class="hint">Front-end only unless a backend upload handler is configured. See README.</span>
-            </div>
+            <p class="hint">Have photos of your vehicle? Text or email them to us after you submit and we'll include them in your quote.</p>
           </fieldset>
 
           <fieldset class="form-step" data-step aria-hidden="true">
