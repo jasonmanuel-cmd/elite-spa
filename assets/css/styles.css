@@ -967,7 +967,9 @@ p {
   border: 1px solid var(--border);
 }
 
-.split__media img {
+.split__media img,
+.split__media video {
+  display: block;
   width: 100%;
   object-fit: cover;
   aspect-ratio: 4 / 3;
