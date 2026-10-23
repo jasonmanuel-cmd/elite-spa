@@ -9,7 +9,7 @@
 
    Run:  node build/build.mjs
    ========================================================================== */
-import { writeFileSync, mkdirSync } from "node:fs";
+import { writeFileSync, readFileSync, mkdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -68,6 +68,30 @@ for (const page of pages) {
   count++;
   console.log("  ✓ " + page.out);
 }
+
+/* ------------------------------------------------------------------ */
+/* index.html: keep the hand-authored <main> + <head>, but regenerate  */
+/* the shared header and footer so they can never drift from partials. */
+/* ------------------------------------------------------------------ */
+const indexPath = join(ROOT, "index.html");
+const indexHtml = readFileSync(indexPath, "utf8");
+const bodyStart = indexHtml.indexOf("<body>");
+const mainStart = indexHtml.indexOf('  <main id="main">');
+const mainEnd = indexHtml.indexOf("</main>") + "</main>".length;
+if (bodyStart < 0 || mainStart < 0 || mainEnd < "</main>".length) {
+  throw new Error("index.html: could not locate <body>/<main> boundaries");
+}
+writeFileSync(
+  indexPath,
+  indexHtml.slice(0, bodyStart) +
+    header +
+    "\n" +
+    indexHtml.slice(mainStart, mainEnd) +
+    "\n\n" +
+    footer,
+  "utf8"
+);
+console.log("  ✓ index.html (header/footer synced)");
 
 /* ------------------------------------------------------------------ */
 /* sitemap.xml                                                         */

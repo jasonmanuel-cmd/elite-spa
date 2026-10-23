@@ -361,15 +361,7 @@ export function modal() {
                 </select>
               </div>
             </div>
-            <div class="field">
-              <label for="c-photos">Photos (optional)</label>
-              <label class="file-drop" for="c-photos">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M12 16V4M8 8l4-4 4 4"/><path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
-                <span data-file-label>Tap to add photos of your vehicle</span>
-              </label>
-              <input id="c-photos" name="photos" type="file" accept="image/*" multiple class="sr-only" />
-              <span class="hint">Front-end only unless a backend upload handler is configured. See README.</span>
-            </div>
+            <p class="hint">Have photos of your vehicle? Text or email them to us after you submit and we'll include them in your quote.</p>
           </fieldset>
 
           <fieldset class="form-step" data-step aria-hidden="true">

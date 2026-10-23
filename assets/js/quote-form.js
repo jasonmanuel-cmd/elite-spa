@@ -35,11 +35,7 @@
     // endpoint: "/api/hubspot-quote",
     // ----------------------------------------------------------------------
 
-    method: "POST",
-    // Set to false if your endpoint expects multipart/form-data (file upload).
-    sendAsJson: true,
-    // Minimum ms the honeypot expects the form to be open (bot heuristic).
-    minFillTimeMs: 2500
+    method: "POST"
   };
 
   var form = document.querySelector("[data-quote-form]");
@@ -226,13 +222,6 @@
       return;
     }
 
-    // Time-based bot heuristic
-    if (Date.now() - openedAt < CONFIG.minFillTimeMs) {
-      // Too fast to be human — likely a bot. Fail quietly.
-      announce("Thank you. Your request has been received.", "success");
-      return;
-    }
-
     submitForm();
   });
 
@@ -244,19 +233,15 @@
     formData.append("_page", window.location.pathname);
     formData.append("_submittedAt", new Date().toISOString());
 
-    var fetchOptions = { method: CONFIG.method };
-
-    if (CONFIG.sendAsJson && (!fileInput || !fileInput.files.length)) {
-      var payload = {};
-      formData.forEach(function (value, key) {
-        payload[key] = value;
-      });
-      fetchOptions.headers = { "Content-Type": "application/json" };
-      fetchOptions.body = JSON.stringify(payload);
-    } else {
-      // multipart/form-data — let the browser set the boundary header
-      fetchOptions.body = formData;
-    }
+    var payload = {};
+    formData.forEach(function (value, key) {
+      if (typeof value === "string") payload[key] = value;
+    });
+    var fetchOptions = {
+      method: CONFIG.method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    };
 
     fetch(CONFIG.endpoint, fetchOptions)
       .then(function (res) {
@@ -271,13 +256,11 @@
         form.reset();
         window.setTimeout(function () { showStep(0); }, 400);
       })
-      .catch(function (err) {
-        // The endpoint is a placeholder by default; guide the user gracefully.
+      .catch(function () {
         announce(
           "We couldn't submit the form automatically. Please call (830) 431-2088 or email contact@eliteautospasa.com and we'll help right away.",
           "error"
         );
-        if (window.console) console.warn("[v0] Quote submission failed:", err.message);
       })
       .finally(function () {
         setLoading(false);

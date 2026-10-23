@@ -37,7 +37,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
 
   <!-- Preload the single LCP hero image -->
-  <link rel="preload" as="image" href="/assets/images/hero-showroom.png" fetchpriority="high" />
+  <link rel="preload" as="image" href="/assets/video/hero-poster.webp" fetchpriority="high" />
 
   <!-- Styles -->
   <link rel="stylesheet" href="/assets/css/styles.css" />
@@ -204,7 +204,6 @@
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
 
-  <!-- ============================= HEADER ============================= -->
   <header class="site-header" data-header>
     <div class="container">
       <a class="brand" href="/" aria-label="Elite Auto Spa home">
@@ -239,7 +238,6 @@
     </div>
   </header>
 
-  <!-- Mobile drawer -->
   <nav class="mobile-nav" id="mobile-nav" data-mobile-nav aria-label="Mobile">
     <ul>
       <li><a href="/#services">Services</a></li>
@@ -256,17 +254,13 @@
     <!-- ============================== HERO ============================== -->
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero__media">
-        <!--
-          LCP asset: single preloaded poster image. To enable an optional
-          background video later, wrap in <video data-lazy-video> per
-          lazy-media.js (poster stays as the fast LCP fallback).
-        -->
-        <picture>
-          <!-- [ADD AVIF/WEBP SOURCES AFTER CONVERSION — see README] -->
-          <img src="/assets/images/hero-showroom.png"
-               alt="Matte-black luxury sports car under studio lighting in the Elite Auto Spa showroom"
-               width="1024" height="1024" fetchpriority="high" decoding="async" />
-        </picture>
+        <!-- Poster is the LCP asset; the video loads lazily on top of it (see lazy-media.js). -->
+        <video class="hero__video" data-lazy-video data-allow-mobile="true"
+               poster="/assets/video/hero-poster.webp" muted loop playsinline preload="none"
+               aria-hidden="true" tabindex="-1" width="1280" height="720">
+          <source data-src="/assets/video/hero.webm" type="video/webm" />
+          <source data-src="/assets/video/hero.mp4" type="video/mp4" />
+        </video>
         <span class="light-sweep" aria-hidden="true"></span>
       </div>
 
@@ -462,27 +456,27 @@
 
         <div class="gallery-grid">
           <figure class="gallery-item gallery-item--wide reveal">
-            <img src="/assets/images/projects/vinyl-wrap.png" loading="lazy" decoding="async" width="1024" height="1024" alt="Angular electric pickup wrapped in satin color-shift vinyl under studio lighting" />
+            <img src="/assets/images/projects/vinyl-wrap.webp" loading="lazy" decoding="async" width="1024" height="1024" alt="Angular electric pickup wrapped in satin color-shift vinyl under studio lighting" />
             <figcaption class="gallery-item__caption">Color-shift vinyl wrap</figcaption>
           </figure>
           <figure class="gallery-item reveal" data-delay="1">
-            <img src="/assets/images/projects/ppf-detail.png" loading="lazy" decoding="async" width="1024" height="1024" alt="Technician applying clear paint protection film to a glossy black hood" />
+            <img src="/assets/images/projects/ppf-detail.webp" loading="lazy" decoding="async" width="1024" height="1024" alt="Technician applying clear paint protection film to a glossy black hood" />
             <figcaption class="gallery-item__caption">Paint protection film</figcaption>
           </figure>
           <figure class="gallery-item reveal" data-delay="2">
-            <img src="/assets/images/projects/ceramic-coating.png" loading="lazy" decoding="async" width="1024" height="1024" alt="Water beading on a freshly ceramic-coated metallic paint surface" />
+            <img src="/assets/images/projects/ceramic-coating.webp" loading="lazy" decoding="async" width="1024" height="1024" alt="Water beading on a freshly ceramic-coated metallic paint surface" />
             <figcaption class="gallery-item__caption">Ceramic coating</figcaption>
           </figure>
           <figure class="gallery-item reveal">
-            <img src="/assets/images/projects/window-tint.png" loading="lazy" decoding="async" width="1024" height="1024" alt="Dark luxury sedan with freshly tinted windows in a dim showroom" />
+            <img src="/assets/images/projects/window-tint.webp" loading="lazy" decoding="async" width="1024" height="1024" alt="Dark luxury sedan with freshly tinted windows in a dim showroom" />
             <figcaption class="gallery-item__caption">Window tint</figcaption>
           </figure>
           <figure class="gallery-item reveal" data-delay="1">
-            <img src="/assets/images/projects/paint-correction.png" loading="lazy" decoding="async" width="1024" height="1024" alt="Dual-action polisher removing swirl marks on a black door panel" />
+            <img src="/assets/images/projects/paint-correction.webp" loading="lazy" decoding="async" width="1024" height="1024" alt="Dual-action polisher removing swirl marks on a black door panel" />
             <figcaption class="gallery-item__caption">Paint correction</figcaption>
           </figure>
           <figure class="gallery-item reveal" data-delay="2">
-            <img src="/assets/images/projects/restoration.png" loading="lazy" decoding="async" width="1024" height="1024" alt="Restored classic muscle car with glossy deep paint in a dark workshop" />
+            <img src="/assets/images/projects/restoration.webp" loading="lazy" decoding="async" width="1024" height="1024" alt="Restored classic muscle car with glossy deep paint in a dark workshop" />
             <figcaption class="gallery-item__caption">Restoration</figcaption>
           </figure>
         </div>
@@ -498,7 +492,7 @@
       <div class="container">
         <div class="split split--media-first">
           <div class="split__media reveal">
-            <img src="/assets/images/showroom-interior.png" loading="lazy" decoding="async" width="1024" height="1024" alt="Interior of the Elite Auto Spa detailing studio with a luxury car under spotlights" />
+            <img src="/assets/images/showroom-interior.webp" loading="lazy" decoding="async" width="1024" height="1024" alt="Interior of the Elite Auto Spa detailing studio with a luxury car under spotlights" />
           </div>
           <div class="reveal" data-delay="1">
             <span class="eyebrow">Why Elite Auto Spa</span>
@@ -651,15 +645,14 @@
     </section>
   </main>
 
-  <!-- ============================== FOOTER ============================== -->
   <footer class="site-footer">
     <div class="container">
       <div class="footer-grid">
         <div class="footer-col footer-brand">
-          <a class="brand" href="/" aria-label="Elite Auto Spa home">
-            <span class="brand__mark" aria-hidden="true">E</span>
-            <span class="brand__name">Elite Auto Spa<small>Restyling Showroom</small></span>
-          </a>
+        <a class="brand" href="/" aria-label="Elite Auto Spa home">
+          <img class="brand__mark" src="/assets/images/elite-logo.jpg" alt="" aria-hidden="true" width="44" height="44" />
+          <span class="brand__name">Elite Auto Spa<small>Restyling Showroom</small></span>
+        </a>
           <p>Premium automotive restyling &mdash; paint protection film, ceramic coatings, window tint, wraps, detailing, and restoration.</p>
           <div class="social-row">
             <a href="https://www.instagram.com/eliteautospasa/" aria-label="Elite Auto Spa on Instagram" rel="noopener" target="_blank">
@@ -668,7 +661,6 @@
             <a href="https://www.facebook.com/eliteautospasa/" aria-label="Elite Auto Spa on Facebook" rel="noopener" target="_blank">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M15 3h-3a4 4 0 0 0-4 4v3H5v4h3v7h4v-7h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
             </a>
-            <!-- LinkedIn: [ADD VERIFIED BUSINESS URL BEFORE LAUNCH] -->
           </div>
         </div>
 
@@ -726,7 +718,6 @@
     </div>
   </footer>
 
-  <!-- ======================= MOBILE STICKY CTA BAR ==================== -->
   <div class="mobile-cta-bar" aria-label="Quick actions">
     <a class="btn btn--ghost" href="tel:+18304312088">
       <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
@@ -735,7 +726,6 @@
     <button class="btn btn--primary" type="button" data-open-quote>Get a Quote</button>
   </div>
 
-  <!-- ========================== QUOTE MODAL =========================== -->
   <div class="modal" data-quote-modal role="dialog" aria-modal="true" aria-labelledby="quote-modal-title" aria-hidden="true">
     <div class="modal__dialog">
       <div class="modal__head">
@@ -746,27 +736,20 @@
       </div>
 
       <div class="modal__body">
-        <!-- Progress -->
         <ol class="steps-progress" data-progress aria-hidden="true">
           <li data-state="active"></li><li data-state="todo"></li><li data-state="todo"></li><li data-state="todo"></li>
         </ol>
         <p class="step-label" data-step-label aria-live="polite">Step 1 of 4 — Service</p>
 
-        <!--
-          The form posts to the endpoint configured in js/quote-form.js.
-          novalidate lets our accessible JS validation drive messaging;
-          required attributes remain for no-JS fallback submission.
-        -->
         <form data-quote-form action="/api/quote" method="post" novalidate>
-          <!-- Honeypot (bots fill this; humans never see it) -->
           <div class="hp-field" aria-hidden="true">
             <label for="company-website">Company website</label>
             <input type="text" id="company-website" name="company_website" tabindex="-1" autocomplete="off" data-honeypot />
           </div>
 
-          <!-- STEP 1: Service -->
           <fieldset class="form-step is-active" data-step aria-hidden="false">
-            <legend class="sr-only"><h3 data-step-heading tabindex="-1">Which service are you interested in?</h3></legend>
+            <legend class="sr-only">Which service are you interested in?</legend>
+            <h3 data-step-heading tabindex="-1" class="sr-only">Which service are you interested in?</h3>
             <div class="field">
               <div class="chip-group" data-required-group role="radiogroup" aria-label="Select a service">
                 <label class="chip"><input type="radio" name="service" value="Paint Protection Film" required /><span>Paint Protection Film</span></label>
@@ -782,9 +765,9 @@
             </div>
           </fieldset>
 
-          <!-- STEP 2: Vehicle -->
           <fieldset class="form-step" data-step aria-hidden="true">
-            <legend class="sr-only"><h3 data-step-heading tabindex="-1">Tell us about your vehicle</h3></legend>
+            <legend class="sr-only">Tell us about your vehicle</legend>
+            <h3 data-step-heading tabindex="-1" class="sr-only">Tell us about your vehicle</h3>
             <div class="field-row field-row--3">
               <div class="field">
                 <label for="v-year">Year</label>
@@ -814,9 +797,9 @@
             </div>
           </fieldset>
 
-          <!-- STEP 3: Contact -->
           <fieldset class="form-step" data-step aria-hidden="true">
-            <legend class="sr-only"><h3 data-step-heading tabindex="-1">How can we reach you?</h3></legend>
+            <legend class="sr-only">How can we reach you?</legend>
+            <h3 data-step-heading tabindex="-1" class="sr-only">How can we reach you?</h3>
             <div class="field-row field-row--2">
               <div class="field">
                 <label for="c-name">Name <span class="req" aria-hidden="true">*</span></label>
@@ -851,20 +834,12 @@
                 </select>
               </div>
             </div>
-            <div class="field">
-              <label for="c-photos">Photos (optional)</label>
-              <label class="file-drop" for="c-photos">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M12 16V4M8 8l4-4 4 4"/><path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
-                <span data-file-label>Tap to add photos of your vehicle</span>
-              </label>
-              <input id="c-photos" name="photos" type="file" accept="image/*" multiple class="sr-only" />
-              <span class="hint">Front-end only unless a backend upload handler is configured. See README.</span>
-            </div>
+            <p class="hint">Have photos of your vehicle? Text or email them to us after you submit and we'll include them in your quote.</p>
           </fieldset>
 
-          <!-- STEP 4: Consent -->
           <fieldset class="form-step" data-step aria-hidden="true">
-            <legend class="sr-only"><h3 data-step-heading tabindex="-1">Confirm &amp; consent</h3></legend>
+            <legend class="sr-only">Confirm and consent</legend>
+            <h3 data-step-heading tabindex="-1" class="sr-only">Confirm and consent</h3>
             <p class="lead" style="font-size:1rem;margin-bottom:1.1rem">
               Almost done. Review the message consent below, then submit your request.
             </p>
@@ -881,7 +856,6 @@
             <div class="form-status" data-form-status hidden></div>
           </fieldset>
 
-          <!-- Navigation -->
           <div class="form-nav">
             <button class="btn btn--ghost" type="button" data-prev style="visibility:hidden">Back</button>
             <div style="display:flex;gap:.6rem;margin-left:auto">
@@ -893,5 +867,6 @@
       </div>
     </div>
   </div>
+
 </body>
 </html>

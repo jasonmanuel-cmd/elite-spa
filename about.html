@@ -103,7 +103,7 @@
   <header class="site-header" data-header>
     <div class="container">
       <a class="brand" href="/" aria-label="Elite Auto Spa home">
-        <span class="brand__mark" aria-hidden="true">E</span>
+        <img class="brand__mark" src="/assets/images/elite-logo.jpg" alt="" aria-hidden="true" width="40" height="40" />
         <span class="brand__name">
           Elite Auto Spa
           <small>Boerne &middot; San Antonio</small>
@@ -150,7 +150,7 @@
   <main id="main">
     <section class="page-hero page-hero--compact" aria-labelledby="about-title">
       <div class="page-hero__media">
-        <img src="/assets/images/showroom-interior.png" alt="Interior of the Elite Auto Spa restyling studio" width="1024" height="1024" loading="eager" decoding="async" />
+        <img src="/assets/images/showroom-interior.webp" alt="Interior of the Elite Auto Spa restyling studio" width="1024" height="1024" loading="eager" decoding="async" />
       </div>
       <div class="container">
         <div class="page-hero__inner">
@@ -204,10 +204,10 @@
     <div class="container">
       <div class="footer-grid">
         <div class="footer-col footer-brand">
-          <a class="brand" href="/" aria-label="Elite Auto Spa home">
-            <span class="brand__mark" aria-hidden="true">E</span>
-            <span class="brand__name">Elite Auto Spa<small>Restyling Showroom</small></span>
-          </a>
+        <a class="brand" href="/" aria-label="Elite Auto Spa home">
+          <img class="brand__mark" src="/assets/images/elite-logo.jpg" alt="" aria-hidden="true" width="44" height="44" />
+          <span class="brand__name">Elite Auto Spa<small>Restyling Showroom</small></span>
+        </a>
           <p>Premium automotive restyling &mdash; paint protection film, ceramic coatings, window tint, wraps, detailing, and restoration.</p>
           <div class="social-row">
             <a href="https://www.instagram.com/eliteautospasa/" aria-label="Elite Auto Spa on Instagram" rel="noopener" target="_blank">
@@ -389,15 +389,7 @@
                 </select>
               </div>
             </div>
-            <div class="field">
-              <label for="c-photos">Photos (optional)</label>
-              <label class="file-drop" for="c-photos">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M12 16V4M8 8l4-4 4 4"/><path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
-                <span data-file-label>Tap to add photos of your vehicle</span>
-              </label>
-              <input id="c-photos" name="photos" type="file" accept="image/*" multiple class="sr-only" />
-              <span class="hint">Front-end only unless a backend upload handler is configured. See README.</span>
-            </div>
+            <p class="hint">Have photos of your vehicle? Text or email them to us after you submit and we'll include them in your quote.</p>
           </fieldset>
 
           <fieldset class="form-step" data-step aria-hidden="true">

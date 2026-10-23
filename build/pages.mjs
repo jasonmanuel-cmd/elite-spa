@@ -180,7 +180,7 @@ const SERVICES = [
       "Paint Protection Film (PPF) in Boerne & San Antonio, TX | Elite Auto Spa",
     metaDesc:
       "Clear paint protection film (PPF) to help guard your vehicle against rock chips and road debris in Boerne and Greater San Antonio. Request a quote from Elite Auto Spa.",
-    image: "/assets/images/projects/ppf-detail.png",
+    image: "/assets/images/projects/ppf-detail.webp",
     imageAlt:
       "Technician applying clear paint protection film to a glossy black hood",
     intro:
@@ -220,7 +220,7 @@ const SERVICES = [
       "Ceramic Coatings in Boerne & San Antonio, TX | Elite Auto Spa",
     metaDesc:
       "Professional ceramic coatings that add gloss and make cleaning easier for vehicles in Boerne and Greater San Antonio. Request a quote from Elite Auto Spa.",
-    image: "/assets/images/projects/ceramic-coating.png",
+    image: "/assets/images/projects/ceramic-coating.webp",
     imageAlt: "Water beading on a freshly ceramic-coated metallic car surface",
     intro:
       "A liquid polymer that cures to a hard, hydrophobic layer — adding depth and gloss while helping water and grime release more easily during washing.",
@@ -258,7 +258,7 @@ const SERVICES = [
     metaTitle: "Window Tinting in Boerne & San Antonio, TX | Elite Auto Spa",
     metaDesc:
       "Window tinting for heat and glare reduction with a clean, refined look in Boerne and Greater San Antonio. Confirm current Texas tint laws with official sources.",
-    image: "/assets/images/projects/window-tint.png",
+    image: "/assets/images/projects/window-tint.webp",
     imageAlt: "Sleek dark luxury sedan with freshly tinted windows in a showroom",
     intro:
       "Reduce heat and glare while giving your vehicle a clean, refined appearance. We'll walk you through film options and help you choose a compliant shade.",
@@ -296,7 +296,7 @@ const SERVICES = [
     metaTitle: "Vinyl Wraps in Boerne & San Antonio, TX | Elite Auto Spa",
     metaDesc:
       "Full color changes and custom accents with premium wrap films in Boerne and Greater San Antonio. Request a wrap consultation from Elite Auto Spa.",
-    image: "/assets/images/projects/vinyl-wrap.png",
+    image: "/assets/images/projects/vinyl-wrap.webp",
     imageAlt: "Modern pickup truck wrapped in satin color-shift vinyl in a studio",
     intro:
       "Transform your vehicle with a full color change or custom accents using premium wrap films — a bold new look that can also help protect the paint underneath.",
@@ -335,7 +335,7 @@ const SERVICES = [
       "Mobile & In-Shop Detailing in Boerne & San Antonio, TX | Elite Auto Spa",
     metaDesc:
       "Interior and exterior detailing with mobile options where available in Boerne and Greater San Antonio. Request a detailing quote from Elite Auto Spa.",
-    image: "/assets/images/projects/mobile-detailing.png",
+    image: "/assets/images/projects/mobile-detailing.webp",
     imageAlt: "Technician steam-cleaning the interior of a luxury car",
     intro:
       "Thorough interior and exterior detailing to refresh your vehicle — with mobile service options available for qualifying jobs, subject to location and on-site conditions.",
@@ -373,7 +373,7 @@ const SERVICES = [
     metaTitle: "Paint Correction in Boerne & San Antonio, TX | Elite Auto Spa",
     metaDesc:
       "Multi-stage paint correction to help reduce swirls and restore clarity in Boerne and Greater San Antonio. Request a quote from Elite Auto Spa.",
-    image: "/assets/images/projects/paint-correction.png",
+    image: "/assets/images/projects/paint-correction.webp",
     imageAlt: "Technician machine-polishing the glossy door panel of a luxury car",
     intro:
       "Multi-stage machine polishing to help reduce swirl marks and restore clarity and depth — an ideal foundation before applying a ceramic coating.",
@@ -412,7 +412,7 @@ const SERVICES = [
       "Vehicle Restoration in Boerne & San Antonio, TX | Elite Auto Spa",
     metaDesc:
       "Refinishing and revival work for cherished and classic vehicles in Boerne and Greater San Antonio. Request a restoration consultation from Elite Auto Spa.",
-    image: "/assets/images/projects/restoration.png",
+    image: "/assets/images/projects/restoration.webp",
     imageAlt: "Classic vintage car with restored glossy paint in a premium workshop",
     intro:
       "Refinishing and revival work for cherished and classic vehicles — bringing back the depth and character of a finish you're proud to show.",
@@ -451,7 +451,7 @@ const SERVICES = [
       "Overspray Removal & Undercarriage Cleaning in Boerne & San Antonio | Elite Auto Spa",
     metaDesc:
       "Overspray removal and detailed undercarriage cleaning for vehicles in Boerne and Greater San Antonio. Request a quote from Elite Auto Spa.",
-    image: "/assets/images/projects/paint-correction.png",
+    image: "/assets/images/projects/paint-correction.webp",
     imageAlt: "Detailed cleaning work on a luxury vehicle surface under studio light",
     intro:
       "Specialized overspray removal and detailed undercarriage cleaning to address contamination and buildup that standard washes leave behind.",
