@@ -175,6 +175,34 @@
   // Expose modal controls for quote-form.js
   window.EliteQuoteModal = { open: openModal, close: closeModal, el: modal };
 
+
+  /* ----------------------------------------------------------------
+     4b. Cursor-follow spotlight on cards (sets --mx / --my), and
+        staggered reveal delays for items in the same row/grid.
+  ---------------------------------------------------------------- */
+  if (!prefersReducedMotion && window.matchMedia("(hover: hover)").matches) {
+    document.addEventListener(
+      "pointermove",
+      function (e) {
+        var card = e.target.closest && e.target.closest(".card, .gallery-item");
+        if (!card) return;
+        var rect = card.getBoundingClientRect();
+        card.style.setProperty("--mx", e.clientX - rect.left + "px");
+        card.style.setProperty("--my", e.clientY - rect.top + "px");
+      },
+      { passive: true }
+    );
+  }
+
+  revealEls.forEach(function (el) {
+    if (el.hasAttribute("data-delay") || !el.parentElement) return;
+    var siblings = Array.prototype.filter.call(el.parentElement.children, function (c) {
+      return c.classList.contains("reveal");
+    });
+    var index = siblings.indexOf(el);
+    if (index > 0) el.style.transitionDelay = Math.min(index, 6) * 70 + "ms";
+  });
+
   /* ----------------------------------------------------------------
      5. Stamp current year in footer(s)
   ---------------------------------------------------------------- */
