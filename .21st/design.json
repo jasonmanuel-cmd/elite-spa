@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "project": {
+    "name": "elite-auto-spa",
+    "productType": null,
+    "stack": [
+      "static HTML",
+      "vanilla CSS",
+      "vanilla JS"
+    ]
+  },
+  "sources": {
+    "tokens": [
+      "assets/css/styles.css"
+    ],
+    "components": [],
+    "assets": [
+      "assets"
+    ],
+    "instructions": []
+  },
+  "design": {
+    "colorMode": "dark",
+    "colors": {
+      "background": "#0a0b0d",
+      "surface": "#1b1e24",
+      "accent": "#2f8fff",
+      "text": "#f4f6fa"
+    },
+    "typography": {
+      "display": "Sora",
+      "body": "Inter"
+    },
+    "spacing": {},
+    "radius": {
+      "base": "4px",
+      "lg": "8px"
+    },
+    "shadows": {},
+    "motion": {},
+    "density": "unknown"
+  },
+  "components": {
+    "installed": [],
+    "preferredPrimitives": [],
+    "patterns": []
+  },
+  "constraints": {
+    "must": [],
+    "avoid": [
+      "new frameworks",
+      "motion without a prefers-reduced-motion fallback"
+    ]
+  },
+  "decisions": [
+    {
+      "date": "2026-10-23",
+      "decision": "Showroom-lighting polish: electric-blue gloss sweeps on buttons, cursor-follow card spotlight, hero sheen and floor glow, scroll progress hairline",
+      "files": [
+        "assets/css/styles.css",
+        "assets/js/main.js"
+      ]
+    }
+  ],
+  "evidence": [],
+  "generatedAt": "2026-10-23T17:05:07.852Z"
+}
