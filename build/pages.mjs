@@ -3,6 +3,7 @@
    Each entry: { out, ...headOpts, main }  where `main` is the <main> HTML.
    ========================================================================== */
 import { SITE, breadcrumb, breadcrumbLd, businessNode } from "./partials.mjs";
+import { tintStudio } from "./experience.mjs";
 
 const arrow = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`;
 const check = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>`;
@@ -107,7 +108,7 @@ ${breadcrumb(trail)}
         </div>
       </div>
     </section>
-
+${s.short === "Window Tint" ? tintStudio({ ctaHref: "/contact.html", ctaLabel: "Discuss your tint options" }) + "\n" : ""}
     <section class="section" aria-labelledby="svc-benefits">
       <div class="container">
         <div class="section-head reveal">
@@ -165,6 +166,8 @@ ${ctaBand(s.ctaHeading)}
     canonical: s.path,
     ogImage: s.image,
     preloadImage: s.image,
+    extraStyles: s.short === "Window Tint" ? ["/assets/css/experience.css"] : [],
+    extraScripts: s.short === "Window Tint" ? ["/assets/js/experience.js"] : [],
     jsonld,
     main
   };

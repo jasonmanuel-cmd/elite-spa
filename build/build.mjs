@@ -25,6 +25,7 @@ import {
   smsPageObj
 } from "./other-pages.mjs";
 import { componentsPageObj } from "./components.mjs";
+import { cinematicSection, tintStudio } from "./experience.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
@@ -55,6 +56,7 @@ function render(page) {
       preloadImage: page.preloadImage,
       robots: page.robots,
       extraScripts: page.extraScripts,
+      extraStyles: page.extraStyles,
       jsonld: page.jsonld || []
     }) +
     header +
@@ -78,7 +80,15 @@ for (const page of pages) {
 /* the shared header and footer so they can never drift from partials. */
 /* ------------------------------------------------------------------ */
 const indexPath = join(ROOT, "index.html");
-const indexHtml = readFileSync(indexPath, "utf8");
+let indexHtml = readFileSync(indexPath, "utf8");
+const experienceStart = "<!-- EXPERIENCE:START -->";
+const experienceEnd = "<!-- EXPERIENCE:END -->";
+const experience = experienceStart + cinematicSection() + tintStudio() + "\n    " + experienceEnd;
+if (!indexHtml.includes(experienceStart) || !indexHtml.includes(experienceEnd)) {
+  throw new Error("index.html: experience insertion markers missing");
+}
+indexHtml = indexHtml.slice(0, indexHtml.indexOf(experienceStart)) + experience +
+  indexHtml.slice(indexHtml.indexOf(experienceEnd) + experienceEnd.length);
 const bodyStart = indexHtml.indexOf("<body>");
 const mainStart = indexHtml.indexOf('  <main id="main">');
 const mainEnd = indexHtml.indexOf("</main>") + "</main>".length;

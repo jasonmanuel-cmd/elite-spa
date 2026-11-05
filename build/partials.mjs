@@ -41,6 +41,7 @@ export function head({
   preloadImage,
   robots = "index, follow, max-image-preview:large",
   extraScripts = [],
+  extraStyles = [],
   jsonld = []
 }) {
   const abs = (p) => (p.startsWith("http") ? p : SITE.origin + p);
@@ -86,7 +87,7 @@ export function head({
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
 ${preloadImage ? `  <link rel="preload" as="image" href="${preloadImage}" fetchpriority="high" />\n` : ""}
-  <link rel="stylesheet" href="/assets/css/styles.css" />
+  <link rel="stylesheet" href="/assets/css/styles.css" />${extraStyles.map((src) => `\n  <link rel="stylesheet" href="${src}" />`).join("")}
 
   <script src="/assets/js/main.js" defer></script>
   <script src="/assets/js/quote-form.js" defer></script>

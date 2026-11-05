@@ -1,1 +1,6 @@
 source-images
+
+# Development-only experience artifacts
+review/
+tests/
+EXPERIENCE-HANDOFF.md
