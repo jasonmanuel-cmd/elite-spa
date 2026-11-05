@@ -77,7 +77,11 @@ const server = http.createServer((req, res) => {
     await page.setViewportSize(viewport);
     const dimensions = await page.evaluate(() => ({ viewport: innerWidth, page: document.documentElement.scrollWidth, studio: document.querySelector('#tint-studio').scrollWidth }));
     assert.ok(dimensions.page <= dimensions.viewport && dimensions.studio <= dimensions.viewport, JSON.stringify(dimensions));
-    if (viewport.height <= 620 || viewport.width <= 760) assert.equal(await page.locator('[data-experience-film]').evaluate(el => el.classList.contains('is-motion-enabled')), false);
+    if (viewport.height <= 620 || viewport.width <= 760) {
+      // Viewport changes deliver matchMedia events asynchronously.
+      await page.waitForFunction(() => !document.querySelector('[data-experience-film]').classList.contains('is-motion-enabled'));
+      assert.equal(await page.locator('[data-experience-film]').evaluate(el => el.classList.contains('is-motion-enabled')), false);
+    }
   }
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.emulateMedia({ reducedMotion: 'reduce' });
