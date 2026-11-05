@@ -127,24 +127,36 @@ function renderEmail(lead) {
 
 async function sendEmail(lead) {
   const { html, text } = renderEmail(lead);
-  const res = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      from: process.env.LEAD_FROM_EMAIL || "Elite Auto Spa Leads <onboarding@resend.dev>",
-      to: [process.env.LEAD_TO_EMAIL],
-      reply_to: lead.email,
-      subject: `New quote request: ${lead.service} — ${lead.name}`,
-      html,
-      text
-    })
+  const controller = new AbortController();
+  let timer;
+  const deadline = new Promise((_, reject) => {
+    timer = setTimeout(() => {
+      reject(new Error('Provider deadline exceeded'));
+      controller.abort();
+    }, 10000);
   });
-  if (!res.ok) {
-    const detail = await res.text().catch(() => "");
-    throw new Error(`Resend responded ${res.status}: ${detail.slice(0, 300)}`);
+  try {
+    const res = await Promise.race([deadline, fetch("https://api.resend.com/emails", {
+      method: "POST",
+      signal: controller.signal,
+      headers: {
+        Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        from: process.env.LEAD_FROM_EMAIL || "Elite Auto Spa Leads <onboarding@resend.dev>",
+        to: [process.env.LEAD_TO_EMAIL],
+        reply_to: lead.email,
+        subject: `New quote request: ${lead.service} — ${lead.name}`,
+        html,
+        text
+      })
+    })]);
+    if (!res.ok) {
+      throw new Error('Provider rejected request');
+    }
+    } finally {
+    clearTimeout(timer);
   }
 }
 
@@ -193,7 +205,8 @@ module.exports = async function handler(req, res) {
     await sendEmail(lead);
     return reply(res, 200, { ok: true });
   } catch (err) {
-    console.error("[quote] delivery failed:", err.message);
-    return reply(res, 502, { ok: false, error: "Could not deliver request" });
+    // Do not log provider payloads or infer non-delivery from transport failure.
+    console.error("[quote] delivery unconfirmed");
+    return reply(res, 502, { ok: false, delivery: "unknown", error: "Could not confirm delivery" });
   }
 };

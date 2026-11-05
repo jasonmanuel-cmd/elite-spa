@@ -10,7 +10,8 @@
     "start": "serve -l 3000 .",
     "test": "node --test tests/*.test.mjs",
     "preview:offline": "node build/preview.mjs",
-    "test:browser": "node tests/browser-smoke.cjs"
+    "test:browser": "node tests/browser-smoke.cjs",
+    "test:quote-browser": "node tests/quote-browser.cjs"
   },
   "devDependencies": {
     "serve": "^14.2.4",

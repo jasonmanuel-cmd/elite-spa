@@ -55,7 +55,11 @@
   var honeypot = form.querySelector("[data-honeypot]");
 
   var current = 0;
-  var openedAt = Date.now();
+  var inFlight = false;
+  var submissionLocked = false;
+  var requestTimeoutMs = 15000;
+  // Keep feedback visible when navigating steps or reopening the modal.
+  if (statusEl) form.insertBefore(statusEl, form.querySelector('.form-nav'));
 
   var stepNames = ["Service", "Vehicle", "Contact", "Consent"];
 
@@ -88,7 +92,8 @@
 
     // Move focus to the step heading for screen readers
     var heading = steps[current].querySelector("h3, [data-step-heading]");
-    if (heading) {
+    var modal = form.closest('[data-quote-modal]');
+    if (heading && (!modal || modal.getAttribute('aria-hidden') !== 'true')) {
       heading.setAttribute("tabindex", "-1");
       heading.focus({ preventScroll: true });
     }
@@ -205,6 +210,7 @@
   /* ------------------------------------------------------------------ */
   form.addEventListener("submit", function (e) {
     e.preventDefault();
+    if (inFlight || submissionLocked) return;
 
     // Validate every step before sending
     for (var i = 0; i < steps.length; i++) {
@@ -226,8 +232,6 @@
   });
 
   function submitForm() {
-    setLoading(true);
-
     var formData = new FormData(form);
     // Add metadata useful for routing/attribution
     formData.append("_page", window.location.pathname);
@@ -237,39 +241,70 @@
     formData.forEach(function (value, key) {
       if (typeof value === "string") payload[key] = value;
     });
+    inFlight = true;
+    setLoading(true);
+    if (statusEl) statusEl.hidden = true;
+    // Freeze the submitted draft while pending, but keep modal dismissal usable.
+    var controls = Array.prototype.slice.call(form.querySelectorAll('input, select, textarea, button'));
+    var disabledBefore = controls.map(function (control) { return control.disabled; });
+    controls.forEach(function (control) { control.disabled = true; });
+    var controller = new AbortController();
+    var timer;
     var fetchOptions = {
       method: CONFIG.method,
+      signal: controller.signal,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload)
     };
 
-    fetch(CONFIG.endpoint, fetchOptions)
-      .then(function (res) {
-        if (!res.ok) throw new Error("Request failed with status " + res.status);
-        return res.json().catch(function () { return {}; });
-      })
+    var deadline = new Promise(function (_, reject) {
+      timer = window.setTimeout(function () {
+        reject(new Error('Delivery unconfirmed'));
+        controller.abort();
+      }, requestTimeoutMs);
+    });
+    // Race the entire response, including JSON parsing; late responses have no UI effects.
+    var request = Promise.resolve().then(function () {
+      return fetch(CONFIG.endpoint, fetchOptions);
+    }).then(function (res) {
+      return res.json().then(function (body) {
+        if (res.ok && body && body.ok === true) return;
+        var error = new Error('Delivery unconfirmed');
+        // Only these endpoint responses establish rejection before provider delivery.
+        error.safeToRetry = !res.ok && [400, 413, 415, 429, 503].indexOf(res.status) !== -1 && body && body.ok === false;
+        throw error;
+      });
+    });
+    Promise.race([request, deadline])
       .then(function () {
+        submissionLocked = true;
         announce(
           "Thank you. Your quote request has been received. We'll reach out during business hours.",
           "success"
         );
-        form.reset();
-        window.setTimeout(function () { showStep(0); }, 400);
+        // Retain the submitted details and acknowledgement until the page is left.
       })
-      .catch(function () {
+      .catch(function (error) {
+        submissionLocked = !error.safeToRetry;
         announce(
-          "We couldn't submit the form automatically. Please call (830) 431-2088 or email contact@eliteautospasa.com and we'll help right away.",
+          error.safeToRetry
+            ? "The request was not accepted. Your details are still here. Check the fields and try again, or call (830) 431-2088 or email contact@eliteautospasa.com."
+            : "We couldn't confirm delivery. Your request may have been received. Your details are still here. Please call (830) 431-2088 or email contact@eliteautospasa.com to check before submitting again.",
           "error"
         );
       })
       .finally(function () {
+        window.clearTimeout(timer);
+        inFlight = false;
+        controls.forEach(function (control, index) { control.disabled = disabledBefore[index]; });
         setLoading(false);
       });
   }
 
   function setLoading(isLoading) {
     if (!btnSubmit) return;
-    btnSubmit.disabled = isLoading;
+    form.setAttribute('aria-busy', String(isLoading));
+    btnSubmit.disabled = isLoading || submissionLocked;
     btnSubmit.dataset.originalText =
       btnSubmit.dataset.originalText || btnSubmit.textContent;
     btnSubmit.textContent = isLoading
@@ -290,12 +325,5 @@
   /* ------------------------------------------------------------------ */
   /* Init                                                                */
   /* ------------------------------------------------------------------ */
-  // Reset the fill-timer whenever the modal is opened
-  document.addEventListener("click", function (e) {
-    if (e.target.closest("[data-open-quote]")) {
-      openedAt = Date.now();
-    }
-  });
-
   showStep(0);
 })();
