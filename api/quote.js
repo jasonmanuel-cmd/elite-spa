@@ -136,7 +136,7 @@ async function sendEmail(lead) {
     }, 10000);
   });
   try {
-    const res = await Promise.race([deadline, fetch("https://api.resend.com/emails", {
+    const acknowledgement = fetch("https://api.resend.com/emails", {
       method: "POST",
       signal: controller.signal,
       headers: {
@@ -151,12 +151,19 @@ async function sendEmail(lead) {
         html,
         text
       })
-    })]);
-    if (!res.ok) {
-      throw new Error('Provider rejected request');
-    }
-    } finally {
+    }).then(async (res) => {
+      if (!res.ok) throw new Error('Provider rejected request');
+      // An email ID confirms provider acceptance, not inbox delivery.
+      const body = await res.json();
+      if (!body || typeof body.id !== 'string' || !body.id.trim() || body.error || body.ok === false) {
+        throw new Error('Provider acknowledgement missing');
+      }
+    });
+    await Promise.race([deadline, acknowledgement]);
+  } finally {
     clearTimeout(timer);
+    // Also close unread error bodies and streams still pending at the deadline.
+    controller.abort();
   }
 }
 

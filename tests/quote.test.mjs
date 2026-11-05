@@ -86,15 +86,34 @@ test('API bounds provider wait, aborts, returns unknown and never retries late a
   const p = api((url, options) => { calls++; signal = options.signal; return pending.promise; });
   const run = p.run(); p.time.fire(10000); await run;
   assert.equal(signal.aborted, true); assert.equal(p.res.code, 502); assert.equal(p.res.body.delivery, 'unknown');
-  pending.resolve({ ok: true }); await tick(); assert.equal(calls, 1); assert.equal(p.res.code, 502); assert.equal(p.time.tasks.size, 0);
+  pending.resolve({ ok: true, json: async () => ({ id: 'synthetic-email-id' }) }); await tick(); assert.equal(calls, 1); assert.equal(p.res.code, 502); assert.equal(p.time.tasks.size, 0);
 });
 test('API success/rejection and configuration/validation paths use only fake providers', async () => {
   for (const ok of [true, false]) {
-    const p = api(async () => ({ ok, status: ok ? 200 : 500 })); await p.run();
+    const p = api(async () => ({ ok, status: ok ? 200 : 500, json: async () => ({ id: 'synthetic-email-id' }) })); await p.run();
     assert.equal(p.res.code, ok ? 200 : 502); assert.equal(p.res.body.ok, ok); assert.equal(p.time.tasks.size, 0);
   }
   const p = api(() => { throw Error('must not fetch'); }, {}); await p.run(); assert.equal(p.res.code, 503);
   p.req.body.email = 'invalid'; await p.run(); assert.equal(p.res.code, 400);
+});
+test('provider success requires a usable acknowledgement; every settled request is aborted for cleanup', async () => {
+  for (const body of [null, {}, { id: '' }, { id: ' ' }, { id: 123 }, { error: 'synthetic' }, { id: 'synthetic-id', error: 'synthetic' }, { id: 'synthetic-id', ok: false }, { id: 'synthetic-id' }]) {
+    let signal;
+    const p = api(async (_, options) => { signal = options.signal; return { ok: true, json: async () => body }; });
+    await p.run(); assert.equal(p.res.code, body && body.id === 'synthetic-id' && !body.error && body.ok !== false ? 200 : 502);
+    assert.equal(signal.aborted, true); assert.equal(p.time.tasks.size, 0);
+  }
+  for (const response of [{ ok: true, json: async () => { throw Error('invalid JSON'); } }, { ok: false, json: () => new Promise(() => {}) }]) {
+    let signal; const p = api(async (_, options) => { signal = options.signal; return response; });
+    await p.run(); assert.equal(p.res.code, 502); assert.equal(signal.aborted, true); assert.equal(p.time.tasks.size, 0);
+  }
+});
+test('provider deadline covers stalled acknowledgement body and ignores late acknowledgement', async () => {
+  const body = deferred(); let signal;
+  const p = api(async (_, options) => { signal = options.signal; return { ok: true, json: () => body.promise }; });
+  const run = p.run(); await tick(); p.time.fire(10000); await run;
+  assert.equal(p.res.code, 502); assert.equal(p.res.body.delivery, 'unknown'); assert.equal(signal.aborted, true);
+  body.resolve({ id: 'late-synthetic-id' }); await tick(); assert.equal(p.res.code, 502); assert.equal(p.time.tasks.size, 0);
 });
 test('API transport exceptions clean the deadline and do not expose provider details', async () => {
   for (const fetch of [() => { throw Error('synthetic private detail'); }, async () => { throw Error('synthetic private detail'); }]) {
