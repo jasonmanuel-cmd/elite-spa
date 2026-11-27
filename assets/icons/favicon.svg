@@ -1,10 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Elite Auto Spa">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Elite Auto Spa">
   <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#23272f"/>
-      <stop offset="1" stop-color="#0a0b0d"/>
+    <linearGradient id="c" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff"/><stop offset=".4" stop-color="#a9a9a9"/><stop offset=".55" stop-color="#f1f1f1"/><stop offset="1" stop-color="#6d6d6d"/>
     </linearGradient>
   </defs>
-  <rect width="64" height="64" rx="12" fill="url(#g)" stroke="#3a4150"/>
-  <path d="M22 18h20v6H29v5h11v6H29v5h13v6H22z" fill="#2f8fff"/>
+  <circle cx="60" cy="60" r="55" fill="#060606" stroke="url(#c)" stroke-width="6"/>
+  <circle cx="60" cy="60" r="46" fill="none" stroke="#d32f2f" stroke-width="2.5"/>
+  <g transform="translate(60 60) scale(.36) translate(-334 -198)"><g transform="translate(49 0) skewX(-14)" fill="url(#c)" stroke="#050505" stroke-width="1.2" stroke-linejoin="round">
+    <path d="M222 150H284V168H244V188H278V205H244V228H286V246H222Z"/>
+    <path fill-rule="evenodd" d="M296 246 322 150H348L374 246H350L346 226H324L320 246ZM326 208H344L335 178Z"/>
+    <path d="M386 150H446V168H406V188H446V246H384V228H424V206H386Z"/>
+  </g></g>
 </svg>
