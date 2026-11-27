@@ -55,8 +55,8 @@ const server = http.createServer((req, res) => {
   assert.equal(await page.locator('#protocol .protocol__step').count(), 4);
   assert.equal(await page.locator('.promo-banner [data-open-quote]').count(), 1);
   await page.locator('.telemetry-strip').scrollIntoViewIfNeeded();
-  await page.waitForFunction(() => document.querySelector('[data-count="6421"]').textContent === '6,421+', null, { timeout: 5000 });
-  assert.equal(await page.locator('[data-count="7"]').innerText(), '07');
+  await page.waitForFunction(() => document.querySelector('[data-count="7"]').textContent === '07', null, { timeout: 5000 });
+  assert.equal(await page.locator('.telemetry-strip li').count(), 3);
   await page.locator('#protocol').scrollIntoViewIfNeeded();
   await page.waitForFunction(() => parseFloat(document.querySelector('[data-protocol]').style.getPropertyValue('--fill') || '0') > 0);
   assert.equal(await page.locator('.cursor-ring').count() <= 1, true);

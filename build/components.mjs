@@ -86,7 +86,7 @@ ${compare({
           <span class="eyebrow">By the Numbers</span>
           <h2 id="stats-title">Counters</h2>
         </div>
-        <div class="stat-grid">${stat({ value: 6421, suffix: "+", label: "Vehicles serviced (business-provided claim)" })}${stat({ value: 8, label: "Services offered" })}${stat({ value: 2, label: "Locations served" })}
+        <div class="stat-grid">${stat({ value: 8, label: "Services offered" })}${stat({ value: 2, label: "Locations served" })}
         </div>
       </div>
     </section>

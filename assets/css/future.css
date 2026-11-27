@@ -684,8 +684,10 @@ h3 { letter-spacing: -0.005em; }
   color: var(--text-muted);
   line-height: 1.5;
 }
+.telemetry-strip li:last-child:nth-child(odd) { grid-column: 1 / -1; }
 @media (min-width: 860px) {
-  .telemetry-strip ul { grid-template-columns: repeat(4, 1fr); }
+  .telemetry-strip ul { grid-template-columns: repeat(3, 1fr); }
+  .telemetry-strip li:last-child:nth-child(odd) { grid-column: auto; }
 }
 
 /* ------------------------------------------------------------------ */
