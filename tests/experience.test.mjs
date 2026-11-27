@@ -270,3 +270,13 @@ test("a design change during clipboard work does not claim the new selections we
   assert.equal(s.querySelector('[data-copy-design]').disabled,false);
   p.dom.window.close();
 });
+
+test("no unverified business claims or publishing placeholders ship on any page", () => {
+  const pages = ["index.html", "about.html", "contact.html", "gallery.html", "faq.html", "services/window-tint.html", "services/paint-protection-film.html", "locations/boerne-tx.html", "locations/san-antonio-tx.html"];
+  for (const file of pages) {
+    const html = readFileSync(join(root, file), "utf8");
+    for (const pattern of [/6,?421/, /10\+? years|more than 10 years/i, /fully insured/i, /business-provided/i, /VERIFY (BEFORE|PERMISSION)/i, /\[Insert verified/i]) {
+      assert.equal(pattern.test(html), false, `${file} still contains ${pattern}`);
+    }
+  }
+});
