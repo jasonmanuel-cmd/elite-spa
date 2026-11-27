@@ -4,7 +4,7 @@ import { readFileSync, existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { JSDOM } from "jsdom";
-import { cinematicSection, tintStudio } from "../build/experience.mjs";
+import { cinematicSection, tintStudio, TINT_STUDIO_ENABLED } from "../build/experience.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const script = readFileSync(join(root, "assets/js/experience.js"), "utf8");
@@ -139,23 +139,49 @@ test("no-JavaScript fallback is honest, labeled, and cannot present dead control
   dom.window.close();
 });
 
-test("generated integration is scoped to homepage and window tint, with working asset references", () => {
+test("generated integration follows the studio flag, with working asset references", () => {
+  // The vehicle studio ("Your car. Your look.") is paused. When the flag is off
+  // it must be absent everywhere; when on, it is scoped to home + window tint.
   for (const file of ["index.html", "services/window-tint.html"]) {
     const dom = new JSDOM(readFileSync(join(root, file), "utf8"));
     const doc = dom.window.document;
-    assert.equal(doc.querySelectorAll("[data-tint-studio]").length, 1);
-    assert.equal(doc.querySelectorAll("script[src='/assets/js/experience.js']").length, 1);
-    assert.equal(doc.querySelectorAll("link[href='/assets/css/experience.css']").length, 1);
+    assert.equal(doc.querySelectorAll("[data-tint-studio]").length, TINT_STUDIO_ENABLED ? 1 : 0, `studio presence in ${file}`);
+    assert.equal(doc.body.textContent.includes("Your car. Your look."), TINT_STUDIO_ENABLED, `studio heading in ${file}`);
+    assert.equal(doc.querySelector("a[href='#tint-studio']") !== null, TINT_STUDIO_ENABLED, `dead #tint-studio link in ${file}`);
+    const needsExperienceAssets = file === "index.html" || TINT_STUDIO_ENABLED;
+    assert.equal(doc.querySelectorAll("script[src='/assets/js/experience.js']").length, needsExperienceAssets ? 1 : 0);
+    assert.equal(doc.querySelectorAll("link[href='/assets/css/experience.css']").length, needsExperienceAssets ? 1 : 0);
     const ids = [...doc.querySelectorAll("[id]")].map((node) => node.id);
     assert.equal(new Set(ids).size, ids.length, `Duplicate IDs in ${file}`);
     for (const node of doc.querySelectorAll("[data-tint-studio] image, [data-experience-film] img")) {
       assert.ok(existsSync(join(root, node.getAttribute("href") || node.getAttribute("src"))));
     }
-    const expected = file.startsWith("services/") ? "/contact.html" : "/services/window-tint.html";
-    assert.equal(doc.querySelector(".tint-studio__cta").getAttribute("href"), expected);
+    if (TINT_STUDIO_ENABLED) {
+      const expected = file.startsWith("services/") ? "/contact.html" : "/services/window-tint.html";
+      assert.equal(doc.querySelector(".tint-studio__cta").getAttribute("href"), expected);
+    }
     dom.window.close();
   }
   assert.equal(readFileSync(join(root, "services/ceramic-coatings.html"), "utf8").includes("experience.js"), false);
+});
+
+test("every page loads the brand layer, self-hosted fonts and no third-party font host", () => {
+  for (const file of ["index.html", "about.html", "contact.html", "gallery.html", "faq.html", "services/window-tint.html", "locations/boerne-tx.html"]) {
+    const html = readFileSync(join(root, file), "utf8");
+    assert.ok(html.includes("/assets/css/future.css"), `${file} future.css`);
+    assert.ok(html.includes("/assets/js/future.js"), `${file} future.js`);
+    assert.ok(html.includes('id="eas-logo"'), `${file} brand sprite`);
+    assert.equal(/fonts\.(googleapis|gstatic)\.com/.test(html), false, `${file} third-party fonts`);
+  }
+  for (const font of ["montserrat-latin-wght-normal", "montserrat-latin-wght-italic", "jetbrains-mono-latin-wght-normal", "mrs-saint-delafield-latin-400-normal"]) {
+    assert.ok(existsSync(join(root, "assets/fonts", font + ".woff2")), font);
+  }
+});
+
+test("the new design keeps the brand palette and drops the old blue accent", () => {
+  const styles = readFileSync(join(root, "assets/css/styles.css"), "utf8") + readFileSync(join(root, "assets/css/future.css"), "utf8");
+  for (const hex of ["#0a0a0a", "#c0c0c0", "#d32f2f", "#ffffff"]) assert.ok(styles.toLowerCase().includes(hex), hex);
+  assert.equal(/#2f8fff|47,\s*143,\s*255/i.test(styles), false);
 });
 
 test("empty pages are safe and the experience introduces no lead or persistence APIs", () => {

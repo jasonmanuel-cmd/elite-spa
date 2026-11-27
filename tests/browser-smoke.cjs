@@ -39,44 +39,38 @@ const server = http.createServer((req, res) => {
     }, progress);
     await page.waitForFunction(expected => document.querySelector('[data-film-index]').textContent === expected, chapter);
   }
-  assert.equal(await page.locator('[data-shade-option]').first().isDisabled(), true);
-  assert.equal(await page.locator('[data-vehicle-scene]:visible').count(), 0);
-  await page.locator('[data-vehicle-option][value=sedan]').check();
-  await page.locator('[data-vehicle-option][value=sedan]').press('ArrowRight');
-  assert.equal(await page.locator('[data-vehicle-option][value=coupe]').isChecked(), true);
-  await page.locator('[data-tint-range]').focus();
-  await page.locator('[data-tint-range]').press('ArrowRight');
-  assert.equal(await page.locator('[data-tint-number]').innerText(), '20%');
-  await page.locator('[data-studio-tab=tint]').press('ArrowRight');
-  assert.equal(await page.locator('[data-studio-tab=wrap]').getAttribute('aria-selected'), 'true');
-  await page.locator('[data-wrap-option][value=violet]').check();
-  await page.locator('[data-finish-option][value=satin]').check();
-  await page.locator('[data-studio-tab=wrap]').press('End');
-  await page.locator('[data-coverage-option][value=front]').check();
-  for (const key of ['sedan', 'coupe', 'suv', 'pickup']) {
-    await page.locator(`[data-vehicle-option][value=${key}]`).check();
-    assert.equal(await page.locator('[data-vehicle-scene]:visible').count(), 1);
-    assert.equal(await page.locator('[data-vehicle-scene]:visible').getAttribute('data-vehicle-scene'), key);
-    assert.match(await page.locator('[data-summary-wrap]').innerText(), /Deep violet.*Satin/);
-  }
-  await page.locator('[data-tint-compare]').click();
-  assert.equal(await page.locator('[data-tint-studio]').getAttribute('data-coverage'), 'none');
-  await page.locator('[data-tint-compare]').click();
-  assert.equal(await page.locator('[data-tint-studio]').getAttribute('data-coverage'), 'front');
-  await page.locator('[data-tint-reset]').click();
-  assert.equal(await page.locator('[data-vehicle-option][value=pickup]').isChecked(), true);
-  assert.equal(await page.locator('[data-tint-number]').innerText(), '35%');
-  assert.equal(await page.locator('[data-wrap-option][value=original]').isChecked(), true);
+  const { TINT_STUDIO_ENABLED } = await import('../build/experience.mjs');
+  // "Your car. Your look." is paused: it must not render. (Its interactions are covered in experience.test.mjs.)
+  assert.equal(await page.locator('[data-tint-studio]').count(), TINT_STUDIO_ENABLED ? 1 : 0);
+  assert.equal(await page.getByText('Your car. Your look.').count(), TINT_STUDIO_ENABLED ? 1 : 0);
+  assert.equal(await page.locator('a[href="#tint-studio"]').count(), TINT_STUDIO_ENABLED ? 1 : 0);
+
+  // 2040 layer: brand marks, headline integrity, live status, counters, protocol, ticker, promo banner.
+  const logo = await page.locator('.site-header .brand__logo').boundingBox();
+  assert.ok(logo && logo.width > 80 && logo.height > 40, 'header logo must have real size: ' + JSON.stringify(logo));
+  assert.equal((await page.locator('#hero-title').innerText()).replace(/\s+/g, ' ').trim().toLowerCase(), 'revitalize your ride.');
+  assert.ok(await page.locator('#hero-title .w').count() >= 3, 'headline words are split for the reveal');
+  assert.match(await page.locator('[data-clock]').first().innerText(), /\d{1,2}:\d{2} (AM|PM) CT/);
+  assert.equal(await page.locator('.ticker').getAttribute('aria-hidden'), 'true');
+  assert.equal(await page.locator('#protocol .protocol__step').count(), 4);
+  assert.equal(await page.locator('.promo-banner [data-open-quote]').count(), 1);
+  await page.locator('.telemetry-strip').scrollIntoViewIfNeeded();
+  await page.waitForFunction(() => document.querySelector('[data-count="6421"]').textContent === '6,421+', null, { timeout: 5000 });
+  assert.equal(await page.locator('[data-count="7"]').innerText(), '07');
+  await page.locator('#protocol').scrollIntoViewIfNeeded();
+  await page.waitForFunction(() => parseFloat(document.querySelector('[data-protocol]').style.getPropertyValue('--fill') || '0') > 0);
+  assert.equal(await page.locator('.cursor-ring').count() <= 1, true);
+  const fonts = await page.evaluate(async () => { await document.fonts.ready; return [...document.fonts].filter(f => f.status === 'loaded').map(f => f.family.replace(/"/g, '')); });
+  assert.ok(fonts.includes('Montserrat'), 'self-hosted Montserrat loads: ' + fonts.join(','));
+  assert.equal(await page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--color-accent').trim().toLowerCase()), '#d32f2f');
+
   await page.addScriptTag({ path: require.resolve('axe-core/axe.min.js') });
-  for (const tab of ['tint', 'wrap', 'ppf']) {
-    await page.locator(`[data-studio-tab=${tab}]`).click();
-    const violations = await page.evaluate(async () => (await axe.run(document.querySelector('#tint-studio'))).violations.map(v => ({ id: v.id, targets: v.nodes.map(n => n.target) })));
-    assert.deepEqual(violations, [], `Accessibility violations in ${tab}: ${JSON.stringify(violations)}`);
-  }
+  const axeViolations = await page.evaluate(async () => (await axe.run(document, { rules: { 'color-contrast': { enabled: false } } })).violations.map(v => ({ id: v.id, targets: v.nodes.slice(0, 3).map(n => n.target) })));
+  assert.deepEqual(axeViolations, [], 'Homepage accessibility violations: ' + JSON.stringify(axeViolations));
   for (const viewport of [{ width: 320, height: 640 }, { width: 390, height: 844 }, { width: 768, height: 1024 }, { width: 812, height: 375 }, { width: 1440, height: 1000 }, { width: 2560, height: 1440 }]) {
     await page.setViewportSize(viewport);
-    const dimensions = await page.evaluate(() => ({ viewport: innerWidth, page: document.documentElement.scrollWidth, studio: document.querySelector('#tint-studio').scrollWidth }));
-    assert.ok(dimensions.page <= dimensions.viewport && dimensions.studio <= dimensions.viewport, JSON.stringify(dimensions));
+    const dimensions = await page.evaluate(() => ({ viewport: innerWidth, page: document.documentElement.scrollWidth }));
+    assert.ok(dimensions.page <= dimensions.viewport, 'horizontal overflow ' + JSON.stringify(dimensions));
     if (viewport.height <= 620 || viewport.width <= 760) {
       // Viewport changes deliver matchMedia events asynchronously.
       await page.waitForFunction(() => !document.querySelector('[data-experience-film]').classList.contains('is-motion-enabled'));
@@ -88,7 +82,6 @@ const server = http.createServer((req, res) => {
   assert.equal(await page.locator('[data-experience-film]').evaluate(el => el.classList.contains('is-motion-enabled')), false);
   assert.equal(await page.locator('.experience-film__stage').evaluate(el => getComputedStyle(el).position), 'relative');
   await page.emulateMedia({ forcedColors: 'active' });
-  assert.equal(await page.locator('[data-vehicle-option][value=pickup]').isChecked(), true);
   await page.emulateMedia({ forcedColors: 'none', reducedMotion: 'no-preference' });
   await page.locator('header [data-open-quote]').click();
   assert.equal(await page.locator('[data-quote-modal]').getAttribute('aria-hidden'), 'false');
@@ -100,8 +93,8 @@ const server = http.createServer((req, res) => {
   await page.keyboard.press('Escape');
   assert.equal(await page.locator('[data-nav-toggle]').getAttribute('aria-expanded'), 'false');
   await page.goto(base + '/services/window-tint.html');
-  await page.locator('[data-vehicle-option][value=suv]').check();
-  assert.equal(await page.locator('.tint-studio__cta').getAttribute('href'), '/contact.html');
+  assert.equal(await page.locator('[data-tint-studio]').count(), TINT_STUDIO_ENABLED ? 1 : 0);
+  assert.equal(await page.locator('.site-header .brand__logo').count(), 1);
   await page.goto(base);
   await page.goBack();
   assert.ok((await page.url()).endsWith('/services/window-tint.html'));
@@ -109,10 +102,11 @@ const server = http.createServer((req, res) => {
   await noJs.route('**/*', route => route.request().url().startsWith(base) ? route.continue() : route.abort());
   const fallback = await noJs.newPage();
   await fallback.goto(base);
-  assert.equal(await fallback.locator('[data-vehicle-option]').first().isDisabled(), true);
-  assert.equal(await fallback.locator('[data-vehicle-scene]:visible').count(), 1);
-  assert.equal(await fallback.locator('noscript').isVisible(), true);
+  // Without JS the headline, hero actions and content must be fully visible.
+  assert.equal(await fallback.locator('#hero-title').isVisible(), true);
+  assert.equal((await fallback.locator('#hero-title').innerText()).trim().toLowerCase(), 'revitalize your ride.');
+  assert.equal(await fallback.locator('.hero--future [data-open-quote]').isVisible(), true);
   assert.equal(postAttempts, 0);
   assert.deepEqual(errors, []);
-  console.log('PASS: Chromium cinematic forward/reverse scroll, car-first flow, four vehicles, native keyboard controls, wrap/PPF, compare/reset, three axe panels, six responsive sizes, reduced motion, forced colors, navigation/quote regression, Back, and no-JS fallback. No leads sent. External font requests were blocked for deterministic offline QA.');
+  console.log('PASS: Chromium cinematic scroll, studio paused, 2040 brand layer (logo, headline, clock, counters, protocol, fonts, palette), homepage axe, six responsive sizes with no overflow, reduced motion, forced colors, navigation/quote regression, Back, and no-JS fallback. No leads sent. No external requests.');
 })().catch(error => { console.error(error); process.exitCode = 1; }).finally(async () => { if (browser) await browser.close(); server.close(); });

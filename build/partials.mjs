@@ -10,6 +10,8 @@
    (or migrate index.html into this generator).
    ========================================================================== */
 
+import { brandSprite, logoWide } from "./brand.mjs";
+
 export const SITE = {
   name: "Elite Auto Spa",
   legalName: "Elite Mobile Detail LLC",
@@ -61,7 +63,7 @@ export function head({
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#0a0b0d" />
+  <meta name="theme-color" content="#0a0a0a" />
 
   <title>${title}</title>
   <meta name="description" content="${description}" />
@@ -83,15 +85,15 @@ export function head({
   <link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml" />
   <link rel="manifest" href="/site.webmanifest" />
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/montserrat-latin-wght-normal.woff2" crossorigin />
 ${preloadImage ? `  <link rel="preload" as="image" href="${preloadImage}" fetchpriority="high" />\n` : ""}
-  <link rel="stylesheet" href="/assets/css/styles.css" />${extraStyles.map((src) => `\n  <link rel="stylesheet" href="${src}" />`).join("")}
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+  <link rel="stylesheet" href="/assets/css/future.css" />${extraStyles.map((src) => `\n  <link rel="stylesheet" href="${src}" />`).join("")}
 
   <script src="/assets/js/main.js" defer></script>
   <script src="/assets/js/quote-form.js" defer></script>
   <script src="/assets/js/lazy-media.js" defer></script>
+  <script src="/assets/js/future.js" defer></script>
 ${extraScripts.map((s) => `  <script src="${s}" defer></script>
 `).join("")}
 ${ld}
@@ -103,16 +105,14 @@ ${ld}
 /* Header + mobile nav                                                 */
 /* ------------------------------------------------------------------ */
 export const header = `<body>
-  <a class="skip-link" href="#main">Skip to content</a>
+${brandSprite}  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="scroll-progress" aria-hidden="true"><span data-scroll-progress></span></div>
 
   <header class="site-header" data-header>
     <div class="container">
-      <a class="brand" href="/" aria-label="Elite Auto Spa home">
-        <img class="brand__mark" src="/assets/images/elite-logo.jpg" alt="" aria-hidden="true" width="40" height="40" />
-        <span class="brand__name">
-          Elite Auto Spa
-          <small>Boerne &middot; San Antonio</small>
-        </span>
+      <a class="brand brand--logo" href="/" aria-label="Elite Auto Spa home">
+        ${logoWide("brand__logo")}
+        <span class="brand__word" aria-hidden="true">Elite Auto Spa<small>Boerne &middot; San Antonio</small></span>
       </a>
 
       <nav class="primary-nav" aria-label="Primary">
@@ -127,6 +127,7 @@ export const header = `<body>
       </nav>
 
       <div class="header-actions">
+        <span class="live-chip" data-live-status aria-live="off"><i aria-hidden="true"></i><span data-live-text>Boerne, TX</span></span>
         <a class="btn btn--ghost" href="tel:+18304312088">
           <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
           <span class="sr-only">Call </span>(830) 431-2088
@@ -173,9 +174,8 @@ export const footer = `  <footer class="site-footer">
     <div class="container">
       <div class="footer-grid">
         <div class="footer-col footer-brand">
-        <a class="brand" href="/" aria-label="Elite Auto Spa home">
-          <img class="brand__mark" src="/assets/images/elite-logo.jpg" alt="" aria-hidden="true" width="44" height="44" />
-          <span class="brand__name">Elite Auto Spa<small>Restyling Showroom</small></span>
+        <a class="brand brand--logo" href="/" aria-label="Elite Auto Spa home">
+          ${logoWide("brand__logo")}
         </a>
           <p>Premium automotive restyling &mdash; paint protection film, ceramic coatings, window tint, wraps, detailing, and restoration.</p>
           <div class="social-row">
@@ -189,7 +189,7 @@ export const footer = `  <footer class="site-footer">
         </div>
 
         <div class="footer-col">
-          <h4>Services</h4>
+          <h3>Services</h3>
           <ul>
             <li><a href="/services/paint-protection-film.html">Paint Protection Film</a></li>
             <li><a href="/services/ceramic-coatings.html">Ceramic Coatings</a></li>
@@ -202,7 +202,7 @@ export const footer = `  <footer class="site-footer">
         </div>
 
         <div class="footer-col">
-          <h4>Explore</h4>
+          <h3>Explore</h3>
           <ul>
             <li><a href="/gallery.html">Gallery</a></li>
             <li><a href="/about.html">About</a></li>
@@ -214,7 +214,7 @@ export const footer = `  <footer class="site-footer">
         </div>
 
         <div class="footer-col">
-          <h4>Visit &amp; Contact</h4>
+          <h3>Visit &amp; Contact</h3>
           <address>
             <strong class="legal-name">Elite Auto Spa</strong><br />
             108 Scheele Rd, Unit 3<br />
@@ -222,7 +222,7 @@ export const footer = `  <footer class="site-footer">
             <a href="tel:+18304312088">(830) 431-2088</a><br />
             <a href="mailto:contact@eliteautospasa.com">contact@eliteautospasa.com</a>
           </address>
-          <h4 style="margin-top:1.25rem">Hours</h4>
+          <h3 style="margin-top:1.25rem">Hours</h3>
           <ul>
             <li>Mon&ndash;Fri: 9:00 AM &ndash; 5:00 PM</li>
             <li>Saturday: By appointment only</li>

@@ -25,7 +25,7 @@ import {
   smsPageObj
 } from "./other-pages.mjs";
 import { componentsPageObj } from "./components.mjs";
-import { cinematicSection, tintStudio } from "./experience.mjs";
+import { cinematicSection, studioIfEnabled } from "./experience.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
@@ -83,7 +83,7 @@ const indexPath = join(ROOT, "index.html");
 let indexHtml = readFileSync(indexPath, "utf8");
 const experienceStart = "<!-- EXPERIENCE:START -->";
 const experienceEnd = "<!-- EXPERIENCE:END -->";
-const experience = experienceStart + cinematicSection() + tintStudio() + "\n    " + experienceEnd;
+const experience = experienceStart + cinematicSection() + studioIfEnabled() + "\n    " + experienceEnd;
 if (!indexHtml.includes(experienceStart) || !indexHtml.includes(experienceEnd)) {
   throw new Error("index.html: experience insertion markers missing");
 }

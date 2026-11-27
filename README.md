@@ -13,7 +13,7 @@ frameworks, no runtime dependencies, no build step required to view it.
 ## Quick start
 
 ```bash
-pnpm install      # installs `serve` (the only dev dependency)
+pnpm install      # dev tooling only (serve, jsdom, playwright, axe-core)
 pnpm dev          # serves the site at http://localhost:3000
 ```
 
@@ -47,15 +47,19 @@ Netlify, GitHub Pages, S3+CloudFront, etc.). Just serve the project root.
 ├── sms-terms.html             # A2P 10DLC / SMS consent terms
 │
 ├── assets/
-│   ├── css/styles.css         # Full design system
+│   ├── css/styles.css         # Base design system (tokens, components)
+│   ├── css/future.css         # "2040" brand layer: HUD, chrome type, red/silver/obsidian
+│   ├── fonts/                 # Self-hosted Montserrat, JetBrains Mono, signature script
 │   ├── js/
 │   │   ├── main.js            # Nav, header, scroll reveal, modal control
+│   │   ├── future.js          # Scroll bar, headline reveal, badge tilt, live hours, counters, motes
 │   │   ├── quote-form.js      # Multi-step quote form + validation
 │   │   └── lazy-media.js      # IntersectionObserver lazy media
 │   ├── images/                # Generated premium imagery
 │   └── icons/favicon.svg
 │
 ├── build/                     # Static site generator (Node, zero deps)
+│   ├── brand.mjs              # Inline SVG sprite: wing logo, round badge, monogram
 │   ├── partials.mjs           # Shared head/header/footer/modal + JSON-LD
 │   ├── pages.mjs              # Service page content + data
 │   ├── other-pages.mjs        # Location/gallery/about/faq/contact/legal
@@ -84,6 +88,33 @@ This rewrites the `services/`, `locations/`, and top-level content pages plus
 
 > `pnpm build` also rewrites the header and footer of `index.html` from
 > `build/partials.mjs`; its `<head>` and `<main>` stay hand-authored.
+
+---
+
+## Brand system (2040 layer)
+
+| Token | Hex | Role |
+|-------|-----|------|
+| Obsidian Black | `#0A0A0A` | Page, panels |
+| Metallic Silver | `#C0C0C0` | Chrome type, HUD lines, secondary text |
+| Signature Red | `#D32F2F` | Accent, CTAs, glow, progress |
+| Snow White | `#FFFFFF` | Headlines, primary text |
+
+- Logos live in `build/brand.mjs` as inline SVG `<symbol>`s (`#eas-logo`, `#eas-badge`,
+  `#eas-mark`), injected once per page by `partials.mjs`. Inline (not `<img>`) so the
+  self-hosted Montserrat renders inside the marks.
+- The round badge corrects the brand board's "MOBL.E" artifact to "MOBILE".
+- Fonts are self-hosted in `assets/fonts/` (no Google Fonts requests).
+- All decorative motion honors `prefers-reduced-motion`; the site works without `future.js`.
+- "Open now" / clock in the header and hero are computed in the browser from the real
+  business hours (Mon–Fri 9–5, America/Chicago). If hours change, update `tickClock()` in
+  `assets/js/future.js` and the footer in `build/partials.mjs`.
+
+### Paused: "Your car. Your look." vehicle studio
+
+The interactive vehicle studio is intact but switched off. To bring it back, set
+`TINT_STUDIO_ENABLED = true` in `build/experience.mjs`, run `pnpm build`, and update the
+browser smoke test (it asserts the studio is absent while paused).
 
 ---
 

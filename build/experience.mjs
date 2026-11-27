@@ -5,6 +5,14 @@
  */
 import { vehicleScene, vehicleIcon } from "./vehicle-art.mjs";
 
+/**
+ * "Your car. Your look." vehicle studio is PAUSED for the 2040 rebrand.
+ * The component below is intact and tested in isolation. Flip this to true
+ * (then run `pnpm build`) to put it back on the homepage and window-tint page.
+ */
+export const TINT_STUDIO_ENABLED = false;
+export const studioIfEnabled = (options) => (TINT_STUDIO_ENABLED ? tintStudio(options) : "");
+
 const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (c) => ({
   "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
 }[c]));
@@ -52,7 +60,7 @@ export function cinematicSection({ id = "finish-experience" } = {}) {
               </div>
               <p class="experience-film__caption">Concept imagery. Explore the look, then discuss the real options.</p>
             </div>
-            <a class="experience-text-link" href="#tint-studio">Open the vehicle studio <span aria-hidden="true">↗</span></a>
+            <a class="experience-text-link" href="${TINT_STUDIO_ENABLED ? "#tint-studio" : "/services/window-tint.html"}">${TINT_STUDIO_ENABLED ? "Open the vehicle studio" : "Explore window tint"} <span aria-hidden="true">↗</span></a>
           </div>
         </div>
         <div class="experience-film__progress" aria-hidden="true"><span></span></div>
