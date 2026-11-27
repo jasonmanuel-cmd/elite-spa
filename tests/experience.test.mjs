@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync, existsSync } from "node:fs";
+import { readFileSync, existsSync, readdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { JSDOM } from "jsdom";
@@ -272,10 +272,10 @@ test("a design change during clipboard work does not claim the new selections we
 });
 
 test("no unverified business claims or publishing placeholders ship on any page", () => {
-  const pages = ["index.html", "about.html", "contact.html", "gallery.html", "faq.html", "services/window-tint.html", "services/paint-protection-film.html", "locations/boerne-tx.html", "locations/san-antonio-tx.html"];
+  const pages = ["index.html", "about.html", "contact.html", "gallery.html", "faq.html", "privacy-policy.html", "sms-terms.html", ...readdirSync(join(root, "services")).map((f) => "services/" + f), ...readdirSync(join(root, "locations")).map((f) => "locations/" + f)];
   for (const file of pages) {
     const html = readFileSync(join(root, file), "utf8");
-    for (const pattern of [/6,?421/, /10\+? years|more than 10 years/i, /fully insured/i, /business-provided/i, /VERIFY (BEFORE|PERMISSION)/i, /\[Insert verified/i]) {
+    for (const pattern of [/6,?421/, /10\+? years|more than 10 years/i, /fully insured/i, /business-provided/i, /VERIFY/i, /before publishing/i, /\[Insert/i]) {
       assert.equal(pattern.test(html), false, `${file} still contains ${pattern}`);
     }
   }
